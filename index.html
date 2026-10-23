@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Players FC - 69 eFootball Tournament</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#080c14',
+                            card: '#0f172a',
+                            border: '#1e293b',
+                            cyan: '#00f0ff',
+                            green: '#10b981',
+                            purple: '#a855f7',
+                            magenta: '#ec4899',
+                            yellow: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #060911;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 20%);
+        }
+        .glow-cyan { box-shadow: 0 0 15px rgba(0, 240, 255, 0.25); }
+        .glow-green { box-shadow: 0 0 15px rgba(16, 185, 129, 0.25); }
+        .glow-purple { box-shadow: 0 0 15px rgba(168, 85, 247, 0.25); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0b1120; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+            border-color: #00f0ff;
+            color: #00f0ff;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+        
+        .subtab-btn.active {
+            background-color: #00f0ff;
+            color: #080c14;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar">
+
+    <!-- TOP HEADER / NAV -->
+    <header class="bg-brand-card/90 backdrop-blur-md border-b border-brand-border sticky top-0 z-40 px-3 py-2.5 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchMainTab('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan via-brand-purple to-brand-magenta p-0.5 shadow-lg glow-cyan flex items-center justify-center">
+                    <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid font-black fa-soccer-ball text-brand-cyan text-xl animate-pulse"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wider uppercase bg-gradient-to-r from-brand-cyan via-white to-brand-purple bg-clip-text text-transparent">
+                        ELITE PLAYERS FC
+                    </h1>
+                    <div class="flex items-center space-x-2 text-[10px] text-gray-400 font-semibold tracking-wide">
+                        <span class="bg-brand-cyan/10 text-brand-cyan px-1.5 py-0.5 rounded border border-brand-cyan/20">69 TOURNAMENT</span>
+                        <span id="management-status-tag" class="text-amber-400"><i class="fa-solid fa-lock text-[9px] mr-1"></i>Guest</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Quick Action Buttons -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <button onclick="openModal('management-login-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 font-medium px-3 py-1.5 rounded-lg border border-amber-500/30 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-key text-amber-400"></i>
+                    <span>EPR Login</span>
+                </button>
+                <button onclick="openModal('supabase-config-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-gray-300 font-medium px-2.5 py-1.5 rounded-lg border border-gray-700 transition" title="Supabase Database Settings">
+                    <i class="fa-solid fa-database text-brand-cyan"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-4 flex-grow">
+
+        <!-- COMPACT MAIN NAVIGATION BAR (Side-by-Side buttons, non-scroll heavy) -->
+        <nav class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 mb-5 bg-brand-card/60 p-1.5 rounded-xl border border-brand-border">
+            <button onclick="switchMainTab('registration')" id="tab-btn-registration" class="tab-btn text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
+                <i class="fa-solid fa-file-pen text-sm"></i>
+                <span>Register</span>
+            </button>
+
+            <button onclick="switchMainTab('group-stage')" id="tab-btn-group-stage" class="tab-btn text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
+                <i class="fa-solid fa-layer-group text-sm"></i>
+                <span>Group Stage</span>
+            </button>
+
+            <button onclick="switchMainTab('knockout-stage')" id="tab-btn-knockout-stage" class="tab-btn text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
+                <i class="fa-solid fa-trophy text-sm"></i>
+                <span>Knockout</span>
+            </button>
+
+            <button onclick="switchMainTab('players-list')" id="tab-btn-players-list" class="tab-btn text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
+                <i class="fa-solid fa-users text-sm"></i>
+                <span>Player List</span>
+            </button>
+
+            <button onclick="switchMainTab('rules')" id="tab-btn-rules" class="tab-btn text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
+                <i class="fa-solid fa-book-bookmark text-sm"></i>
+                <span>Rules</span>
+            </button>
+
+            <button onclick="switchMainTab('home')" id="tab-btn-home" class="tab-btn active text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
+                <i class="fa-solid fa-house text-sm"></i>
+                <span>Home</span>
+            </button>
+        </nav>
+
+        <!-- VIEW 1: HOME PAGE -->
+        <section id="view-home" class="view-section space-y-4">
+            <!-- Hero Banner Box -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-brand-card to-slate-900 border border-brand-border p-6 sm:p-8 text-center shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-cyan/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -left-10 -top-10 w-40 h-40 bg-brand-purple/10 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/30 mb-3 uppercase tracking-widest">
+                    <i class="fa-solid fa-bolt mr-1"></i> Official Tournament Portal
+                </span>
+                
+                <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white mb-2">
+                    ELITE PLAYERS FC
+                </h2>
+                <p class="text-brand-cyan text-lg sm:text-xl font-bold tracking-wide mb-4">
+                    69 eFootball Championship 2026
+                </p>
+
+                <p class="text-gray-400 text-xs sm:text-sm max-w-xl mx-auto mb-6">
+                    Welcome to the ultimate eFootball battleground organized by EPR Management. Compete across 16 groups, advance through knockouts, and claim glory.
+                </p>
+
+                <!-- Quick Action Button Layout -->
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <button onclick="switchMainTab('registration')" class="bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-sm px-6 py-2.5 rounded-xl shadow-lg glow-cyan transition transform active:scale-95">
+                        <i class="fa-solid fa-pen-to-square mr-2"></i> TOURNAMENT REGISTRATION
+                    </button>
+                    <button onclick="switchMainTab('group-stage')" class="bg-brand-card hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl border border-brand-border transition">
+                        <i class="fa-solid fa-sitemap mr-2 text-brand-cyan"></i> Group Stage
+                    </button>
+                    <button onclick="switchMainTab('knockout-stage')" class="bg-brand-card hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl border border-brand-border transition">
+                        <i class="fa-solid fa-trophy mr-2 text-amber-400"></i> Knockouts
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Overview Row -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="bg-brand-card/80 border border-brand-border p-3.5 rounded-xl text-center">
+                    <div class="text-gray-400 text-[11px] font-medium uppercase tracking-wider">Total Slots</div>
+                    <div class="text-2xl font-black text-brand-cyan mt-1">64 Players</div>
+                </div>
+                <div class="bg-brand-card/80 border border-brand-border p-3.5 rounded-xl text-center">
+                    <div class="text-gray-400 text-[11px] font-medium uppercase tracking-wider">Approved</div>
+                    <div id="stat-approved-count" class="text-2xl font-black text-brand-green mt-1">0 / 64</div>
+                </div>
+                <div class="bg-brand-card/80 border border-brand-border p-3.5 rounded-xl text-center">
+                    <div class="text-gray-400 text-[11px] font-medium uppercase tracking-wider">Total Groups</div>
+                    <div class="text-2xl font-black text-brand-purple mt-1">16 Groups</div>
+                </div>
+                <div class="bg-brand-card/80 border border-brand-border p-3.5 rounded-xl text-center">
+                    <div class="text-gray-400 text-[11px] font-medium uppercase tracking-wider">Format</div>
+                    <div class="text-2xl font-black text-amber-400 mt-1">Group + World Cup Knockout</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: TOURNAMENT REGISTRATION -->
+        <section id="view-registration" class="view-section hidden max-w-2xl mx-auto space-y-4">
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-4 sm:p-6 shadow-xl relative">
+                <div class="border-b border-brand-border pb-3 mb-4">
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-id-card text-brand-cyan"></i>
+                        <span>69 TOURNAMENT REGISTRATION</span>
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Fill in all accurate information below to submit your player profile for management approval.</p>
+                </div>
+
+                <form id="registration-form" onsubmit="handleRegistrationSubmit(event)" class="space-y-3.5">
+                    <!-- Full Name -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name <span class="text-red-400">*</span></label>
+                        <input type="text" id="reg-name" required placeholder="Enter your full name" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                    </div>
+
+                    <!-- Game UID & Device Name -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">eFootball Game UID <span class="text-red-400">*</span></label>
+                            <input type="text" id="reg-game-uid" required placeholder="e.g. 123-456-789" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Device Name <span class="text-red-400">*</span></label>
+                            <input type="text" id="reg-device" required placeholder="e.g. iPhone 13 / Redmi Note 11" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                        </div>
+                    </div>
+
+                    <!-- Facebook Post Link + Requirement Warning -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">
+                            Facebook Post Link <span class="text-red-400">*</span>
+                        </label>
+                        <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-2.5 mb-2 text-[11px] text-amber-300 leading-relaxed">
+                            <i class="fa-solid fa-circle-exclamation mr-1 text-amber-400"></i>
+                            <strong>Requirement:</strong> Complete all tasks, approve post link and comment section access must be included.
+                        </div>
+                        <input type="url" id="reg-fb-post-link" required placeholder="https://facebook.com/..." class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                    </div>
+
+                    <!-- Gmail / Messenger Invitation Link -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Gmail / Messenger Invitation Link <span class="text-red-400">*</span></label>
+                        <input type="text" id="reg-invitation-link" required placeholder="Messenger Group Link / Email address" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                    </div>
+
+                    <!-- WhatsApp & FB ID Link -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">WhatsApp Number <span class="text-red-400">*</span></label>
+                            <input type="tel" id="reg-whatsapp" required placeholder="+88017xxxxxxxx" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Facebook ID Link <span class="text-red-400">*</span></label>
+                            <input type="url" id="reg-fb-id-link" required placeholder="https://facebook.com/profile.php?id=..." class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-gradient-to-r from-brand-cyan via-blue-600 to-brand-purple hover:opacity-95 text-slate-950 font-black text-sm py-3 rounded-xl shadow-lg transition">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> SUBMIT REGISTRATION (PENDING APPROVAL)
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- VIEW 3: PLAYER LIST WITH PROFILE -->
+        <section id="view-players-list" class="view-section hidden space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 bg-brand-card p-3 rounded-xl border border-brand-border">
+                <h2 class="text-lg font-black text-white flex items-center gap-2">
+                    <i class="fa-solid fa-address-book text-brand-cyan"></i>
+                    <span>PLAYER LIST WITH PROFILE</span>
+                </h2>
+                <div class="text-xs text-gray-400">
+                    Approved Players: <span id="player-count-badge" class="font-bold text-brand-cyan">0</span> / 64
+                </div>
+            </div>
+
+            <!-- Player Grid (Compact Cards) -->
+            <div id="players-card-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <!-- Dynamically Rendered Player Cards -->
+            </div>
+        </section>
+
+        <!-- VIEW 4: GROUP STAGE SECTION -->
+        <section id="view-group-stage" class="view-section hidden space-y-4">
+            <!-- Group Stage Sub-Menu Navigation Tabs (Side-by-side compact buttons) -->
+            <div class="flex flex-wrap items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border justify-center sm:justify-start">
+                <button onclick="switchGroupSubTab('group-view')" id="subtab-btn-group-view" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition">
+                    <i class="fa-solid fa-border-all mr-1"></i> Group
+                </button>
+                <button onclick="switchGroupSubTab('fixture-view')" id="subtab-btn-fixture-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    <i class="fa-solid fa-calendar-days mr-1"></i> Fixture
+                </button>
+                <button onclick="switchGroupSubTab('result-submit-view')" id="subtab-btn-result-submit-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    <i class="fa-solid fa-pen-to-square mr-1"></i> Result Submit
+                </button>
+                <button onclick="switchGroupSubTab('points-table-view')" id="subtab-btn-points-table-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    <i class="fa-solid fa-table-list mr-1"></i> Points Table
+                </button>
+                <button onclick="switchGroupSubTab('qualified-view')" id="subtab-btn-qualified-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    <i class="fa-solid fa-circle-check mr-1 text-brand-green"></i> Qualified For Next Round
+                </button>
+            </div>
+
+            <!-- SUBVIEW 1: GROUP VIEW (Groups A-P) -->
+            <div id="group-subview-group-view" class="group-subview space-y-3">
+                <div id="groups-container-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <!-- Groups A-P dynamically injected -->
+                </div>
+            </div>
+
+            <!-- SUBVIEW 2: FIXTURE VIEW -->
+            <div id="group-subview-fixture-view" class="group-subview hidden space-y-3">
+                <!-- Group Filter Bar -->
+                <div class="flex items-center justify-between bg-brand-card p-2.5 rounded-xl border border-brand-border">
+                    <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-filter mr-1 text-brand-cyan"></i> Filter Group:</span>
+                    <select id="fixture-group-filter" onchange="renderGroupFixtures()" class="bg-slate-900 border border-brand-border text-brand-cyan text-xs font-bold rounded-lg px-3 py-1.5 outline-none">
+                        <option value="ALL">All Groups (A-P)</option>
+                    </select>
+                </div>
+
+                <div id="fixtures-container-list" class="space-y-3">
+                    <!-- Fixtures injected -->
+                </div>
+            </div>
+
+            <!-- SUBVIEW 3: RESULT SUBMIT VIEW -->
+            <div id="group-subview-result-submit-view" class="group-subview hidden space-y-3">
+                <div class="bg-brand-card p-3 rounded-xl border border-brand-border flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-lock mr-1 text-amber-400"></i> Management Result Entry</h3>
+                        <p class="text-[11px] text-gray-400">Only EPR Management members with valid PIN can submit official match scores.</p>
+                    </div>
+                    <div id="submit-access-badge" class="text-xs px-2.5 py-1 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 font-bold">
+                        Locked (Guest Mode)
+                    </div>
+                </div>
+
+                <div id="result-submit-matches-list" class="space-y-3">
+                    <!-- Matches for result input -->
+                </div>
+            </div>
+
+            <!-- SUBVIEW 4: POINTS TABLE VIEW -->
+            <div id="group-subview-points-table-view" class="group-subview hidden space-y-3">
+                <div class="flex items-center justify-between bg-brand-card p-2.5 rounded-xl border border-brand-border">
+                    <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-filter mr-1 text-brand-cyan"></i> Filter Table:</span>
+                    <select id="points-group-filter" onchange="renderGroupPointsTables()" class="bg-slate-900 border border-brand-border text-brand-cyan text-xs font-bold rounded-lg px-3 py-1.5 outline-none">
+                        <option value="ALL">All Groups (A-P)</option>
+                    </select>
+                </div>
+
+                <div id="points-tables-container" class="space-y-4">
+                    <!-- Tables generated -->
+                </div>
+            </div>
+
+            <!-- SUBVIEW 5: QUALIFIED FOR NEXT ROUND -->
+            <div id="group-subview-qualified-view" class="group-subview hidden space-y-3">
+                <div class="bg-brand-card p-4 rounded-xl border border-brand-border">
+                    <h3 class="text-sm font-black text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-medal text-brand-green"></i>
+                        <span>QUALIFIED TEAMS FOR KNOCKOUT STAGE (TOP 2 PER GROUP)</span>
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-4">Automatically updated based on final group stage points tables.</p>
+
+                    <div id="qualified-players-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <!-- Qualified list -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: KNOCKOUT STAGE SECTION -->
+        <section id="view-knockout-stage" class="view-section hidden space-y-4">
+            <!-- Knockout Round Navigation Buttons -->
+            <div class="flex flex-wrap items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border justify-center sm:justify-start">
+                <button onclick="switchKnockoutRound('r32')" id="kround-btn-r32" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition">
+                    Round of 32
+                </button>
+                <button onclick="switchKnockoutRound('r16')" id="kround-btn-r16" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    Round of 16
+                </button>
+                <button onclick="switchKnockoutRound('r8')" id="kround-btn-r8" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    Quarter Final
+                </button>
+                <button onclick="switchKnockoutRound('semi')" id="kround-btn-semi" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                    Semi Final
+                </button>
+                <button onclick="switchKnockoutRound('final')" id="kround-btn-final" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-amber-400 font-bold transition">
+                    <i class="fa-solid fa-trophy mr-1"></i> Final
+                </button>
+                <button onclick="switchKnockoutRound('champion')" id="kround-btn-champion" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-brand-green font-bold transition">
+                    <i class="fa-solid fa-crown mr-1"></i> Champion
+                </button>
+            </div>
+
+            <div id="knockout-matches-container" class="space-y-3">
+                <!-- Knockout matches rendered -->
+            </div>
+        </section>
+
+        <!-- VIEW 6: RULES SECTION -->
+        <section id="view-rules" class="view-section hidden max-w-3xl mx-auto space-y-4">
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-5 shadow-xl space-y-4">
+                <div class="border-b border-brand-border pb-3">
+                    <h2 class="text-xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark text-brand-cyan"></i>
+                        <span>ELITE PLAYERS FC - TOURNAMENT RULES</span>
+                    </h2>
+                    <p class="text-xs text-gray-400">Strict adherence to rules is required for all participating players.</p>
+                </div>
+
+                <div class="space-y-3 text-xs text-gray-300">
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
+                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-sliders mr-1"></i> 1. Match Settings</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-400">
+                            <li>Match Duration: <strong>8 Minutes</strong></li>
+                            <li>Extra Time: <strong>OFF</strong> (Group Stage) / <strong>ON</strong> (Knockout Stage)</li>
+                            <li>Penalties: <strong>OFF</strong> (Group Stage) / <strong>ON</strong> (Knockout Stage)</li>
+                            <li>Condition: Excellent / Normal</li>
+                            <li>Injuries: OFF</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
+                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-camera mr-1"></i> 2. Screenshot & Result Verification</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Both players must take a full-screen screenshot showing the final scoreboard and match statistics. The winner must send the screenshot to the designated WhatsApp group or management line immediately after the match.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
+                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-wifi mr-1"></i> 3. Network Disconnection Policy</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            If a disconnection occurs in the 1st half before 30 mins, restart the match and play the remaining time. If disconnected after 70 mins with a clear goal difference, management reserves the right to decide the final result.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
+                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-handshake mr-1"></i> 4. Fair Play & Conduct</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Abusive language, toxic behavior, or deliberate time-wasting back-passing will result in immediate disqualification without warning.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER WITH SECRET ADMIN ACCESS TRIGGER -->
+    <footer class="bg-brand-card/80 border-t border-brand-border py-4 px-3 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto space-y-1">
+            <p id="secret-admin-trigger" class="cursor-pointer select-none hover:text-brand-cyan transition font-medium" title="Double click for Secret EPR Admin Panel">
+                &copy; <span id="year-span">2026</span> Elite Players FC / EPR Management. All Rights Reserved.
+            </p>
+            <p class="text-[10px] text-gray-600">Built for eFootball 69 Tournament. Double-click copyright above for Admin Panel.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: EPR MANAGEMENT LOGIN MODAL -->
+    <div id="management-login-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-sm p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-brand-border pb-3">
+                <h3 class="font-black text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-amber-400"></i>
+                    <span>EPR Management Login</span>
+                </h3>
+                <button onclick="closeModal('management-login-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="handleManagementLogin(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Enter Management PIN</label>
+                    <input type="password" id="management-pin-input" required placeholder="Default PIN: 1234" class="w-full bg-slate-900 border border-brand-border focus:border-amber-400 text-white text-sm rounded-lg px-3 py-2 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-lg shadow-lg transition">
+                    VERIFY MANAGEMENT PIN
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: SECRET ADMIN PANEL MODAL -->
+    <div id="secret-admin-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+            <!-- Header -->
+            <div class="p-4 border-b border-brand-border flex items-center justify-between bg-slate-900/50">
+                <h3 class="font-black text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-brand-purple"></i>
+                    <span>SECRET EPR ADMIN PANEL</span>
+                </h3>
+                <button onclick="closeModal('secret-admin-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Content Body -->
+            <div class="p-4 space-y-4 overflow-y-auto custom-scrollbar flex-grow">
+                <!-- Quick Admin Control Actions -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <button onclick="seedDemo64Players()" class="bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan hover:bg-brand-cyan/20 font-bold text-xs p-2.5 rounded-xl transition">
+                        <i class="fa-solid fa-bolt mr-1"></i> Seed 64 Demo Players
+                    </button>
+
+                    <button onclick="adminDrawGroups()" class="bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 font-bold text-xs p-2.5 rounded-xl transition">
+                        <i class="fa-solid fa-dice mr-1"></i> Draw 16 Groups (A-P)
+                    </button>
+
+                    <button onclick="adminGenerateGroupFixtures()" class="bg-blue-500/10 border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 font-bold text-xs p-2.5 rounded-xl transition">
+                        <i class="fa-solid fa-diagram-project mr-1"></i> Generate Group Fixtures
+                    </button>
+
+                    <button onclick="adminGenerateKnockouts()" class="bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 font-bold text-xs p-2.5 rounded-xl transition">
+                        <i class="fa-solid fa-trophy mr-1"></i> Generate Knockout Bracket
+                    </button>
+
+                    <button onclick="resetTournamentData()" class="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 font-bold text-xs p-2.5 rounded-xl transition">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Reset Tournament
+                    </button>
+                </div>
+
+                <!-- Pending Registrations Section -->
+                <div class="border border-brand-border rounded-xl p-3 bg-slate-900/50">
+                    <h4 class="text-xs font-bold text-white mb-2 flex items-center justify-between">
+                        <span><i class="fa-solid fa-clock text-amber-400 mr-1"></i> Pending Registrations</span>
+                        <span id="admin-pending-count" class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full text-[10px]">0</span>
+                    </h4>
+
+                    <div id="admin-pending-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                        <!-- Pending list items -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: SUPABASE CONFIGURATION MODAL -->
+    <div id="supabase-config-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-brand-border pb-3">
+                <h3 class="font-black text-white text-base flex items-center gap-2">
+                    <i class="fa-solid fa-database text-brand-cyan"></i>
+                    <span>Supabase API Settings</span>
+                </h3>
+                <button onclick="closeModal('supabase-config-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <p class="text-xs text-gray-400 leading-relaxed">
+                Connect your Supabase Cloud Database URL and Anon Key. If left empty, the application will operate using local persistence fallback automatically.
+            </p>
+
+            <form onsubmit="saveSupabaseConfig(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Supabase URL</label>
+                    <input type="text" id="supabase-url-input" placeholder="https://your-project.supabase.co" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Supabase Anon Key</label>
+                    <input type="password" id="supabase-key-input" placeholder="eyJhbGciOiJIUzI1Ni..." class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2 outline-none">
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <button type="submit" class="flex-1 bg-brand-cyan hover:bg-cyan-400 text-slate-950 font-black text-xs py-2.5 rounded-lg transition">
+                        SAVE SUPABASE CONFIG
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- MAIN JAVASCRIPT LOGIC -->
+    <script>
+        /* ==========================================================================
+           GLOBAL STATE & CONSTANTS
+           ========================================================================== */
+        const STORAGE_KEY = 'EPR_TOURNAMENT_APP_STATE_V1';
+        const DEFAULT_MANAGEMENT_PIN = '1234';
+        const DEFAULT_ADMIN_PIN = 'admin123';
+
+        let appState = {
+            isManagementLoggedIn: false,
+            supabaseUrl: '',
+            supabaseKey: '',
+            players: [], // { id, name, gameUid, deviceName, fbPostLink, invitationLink, whatsapp, fbIdLink, status: 'pending'|'approved' }
+            groups: {}, // { 'A': [pId1, pId2, pId3, pId4], 'B': [...] }
+            groupFixtures: [], // { id, group, round, p1Id, p2Id, p1Score: null, p2Score: null, completed: false }
+            knockouts: {
+                r32: [],
+                r16: [],
+                r8: [],
+                semi: [],
+                final: [],
+                champion: null
+            }
+        };
+
+        let supabaseClient = null;
+
+        /* ==========================================================================
+           INITIALIZATION & LIFECYCLE
+           ========================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStateFromStorage();
+            initSupabase();
+            renderAllViews();
+
+            // Secret Admin Trigger listener (Double Click)
+            const secretElem = document.getElementById('secret-admin-trigger');
+            if (secretElem) {
+                secretElem.addEventListener('dblclick', () => {
+                    const pin = prompt('Enter Secret EPR Admin PIN:');
+                    if (pin === DEFAULT_ADMIN_PIN) {
+                        openModal('secret-admin-modal');
+                    } else if (pin !== null) {
+                        showToast('Invalid Secret Admin PIN!', 'error');
+                    }
+                });
+            }
+        });
+
+        function loadStateFromStorage() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                }
+            } catch (e) {
+                console.error("Failed to load local storage state:", e);
+            }
+        }
+
+        function saveStateToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {
+                console.error("Failed to save state:", e);
+            }
+        }
+
+        function initSupabase() {
+            if (appState.supabaseUrl && appState.supabaseKey && window.supabase) {
+                try {
+                    supabaseClient = window.supabase.createClient(appState.supabaseUrl, appState.supabaseKey);
+                    console.log("Supabase Client Initialized");
+                } catch (err) {
+                    console.error("Supabase init error:", err);
+                }
+            }
+        }
+
+        /* ==========================================================================
+           VIEW & NAVIGATION MANAGEMENT (SPA SINGLE PAGE ARCHITECTURE)
+           ========================================================================== */
+        function switchMainTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
+            
+            // Show target section
+            const target = document.getElementById(`view-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            // Update main tab button states
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Refresh view rendering
+            if (tabId === 'players-list') renderPlayerList();
+            if (tabId === 'group-stage') renderGroupStage();
+            if (tabId === 'knockout-stage') renderKnockouts();
+            if (tabId === 'home') renderHomeStats();
+        }
+
+        function switchGroupSubTab(subtabId) {
+            document.querySelectorAll('.group-subview').forEach(sub => sub.classList.add('hidden'));
+            const target = document.getElementById(`group-subview-${subtabId}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.subtab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-300');
+            });
+            const activeSub = document.getElementById(`subtab-btn-${subtabId}`);
+            if (activeSub) {
+                activeSub.classList.add('active');
+                activeSub.classList.remove('text-gray-300');
+            }
+
+            if (subtabId === 'group-view') renderGroupCards();
+            if (subtabId === 'fixture-view') renderGroupFixtures();
+            if (subtabId === 'result-submit-view') renderResultSubmitList();
+            if (subtabId === 'points-table-view') renderGroupPointsTables();
+            if (subtabId === 'qualified-view') renderQualifiedPlayers();
+        }
+
+        function switchKnockoutRound(roundKey) {
+            document.querySelectorAll('#view-knockout-stage .subtab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = document.getElementById(`kround-btn-${roundKey}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            renderKnockoutRoundMatches(roundKey);
+        }
+
+        /* ==========================================================================
+           RENDER FUNCTIONS
+           ========================================================================== */
+        function renderAllViews() {
+            renderHomeStats();
+            renderPlayerList();
+            renderGroupStage();
+            renderKnockouts();
+            renderAdminPendingList();
+            updateManagementBadges();
+        }
+
+        function renderHomeStats() {
+            const approved = appState.players.filter(p => p.status === 'approved').length;
+            const elem = document.getElementById('stat-approved-count');
+            if (elem) elem.innerText = `${approved} / 64`;
+        }
+
+        function renderPlayerList() {
+            const grid = document.getElementById('players-card-grid');
+            const approvedPlayers = appState.players.filter(p => p.status === 'approved');
+            
+            document.getElementById('player-count-badge').innerText = approvedPlayers.length;
+
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (approvedPlayers.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-8 text-gray-500 bg-brand-card/40 rounded-xl border border-brand-border">
+                        <i class="fa-solid fa-users-slash text-3xl mb-2"></i>
+                        <p class="text-xs">No approved players yet. Submit registration or use Admin Panel to seed players.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            approvedPlayers.forEach((player, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-brand-card border border-brand-border rounded-xl p-3 hover:border-brand-cyan/50 transition shadow-md flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-brand-cyan/10 text-brand-cyan text-[10px] font-black px-2 py-0.5 rounded border border-brand-cyan/30">
+                                #${idx + 1}
+                            </span>
+                            <span class="text-[10px] text-gray-400 bg-slate-900 px-2 py-0.5 rounded border border-gray-800">
+                                <i class="fa-solid fa-mobile-screen mr-1 text-brand-purple"></i>${escapeHtml(player.deviceName)}
+                            </span>
+                        </div>
+                        <h4 class="font-black text-white text-sm tracking-wide mb-1">${escapeHtml(player.name)}</h4>
+                        <p class="text-[11px] text-gray-400 mb-2 font-mono">
+                            <i class="fa-solid fa-gamepad mr-1 text-brand-cyan"></i>UID: ${escapeHtml(player.gameUid)}
+                        </p>
+                    </div>
+                    <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between text-[11px]">
+                        <a href="${escapeHtml(player.fbIdLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline flex items-center gap-1">
+                            <i class="fa-brands fa-facebook"></i> FB Profile
+                        </a>
+                        <span class="text-brand-green font-bold text-[10px]"><i class="fa-solid fa-circle-check mr-1"></i>Approved</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        /* ==========================================================================
+           GROUP STAGE LOGIC & RENDERING
+           ========================================================================== */
+        function renderGroupStage() {
+            populateGroupFilterOptions();
+            renderGroupCards();
+        }
+
+        function populateGroupFilterOptions() {
+            const groupNames = Object.keys(appState.groups).sort();
+            const fixtureSelect = document.getElementById('fixture-group-filter');
+            const pointsSelect = document.getElementById('points-group-filter');
+
+            if (fixtureSelect && pointsSelect) {
+                let html = '<option value="ALL">All Groups (A-P)</option>';
+                groupNames.forEach(g => {
+                    html += `<option value="${g}">Group ${g}</option>`;
+                });
+                fixtureSelect.innerHTML = html;
+                pointsSelect.innerHTML = html;
+            }
+        }
+
+        function renderGroupCards() {
+            const container = document.getElementById('groups-container-grid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const groupKeys = Object.keys(appState.groups).sort();
+
+            if (groupKeys.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-10 bg-brand-card/40 border border-brand-border rounded-xl text-gray-400">
+                        <i class="fa-solid fa-dice text-3xl mb-2 text-brand-purple"></i>
+                        <p class="text-xs">Groups have not been drawn yet by Admin.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            groupKeys.forEach(gKey => {
+                const playerIds = appState.groups[gKey] || [];
+                let playerListHtml = '';
+
+                playerIds.forEach((pId, idx) => {
+                    const player = appState.players.find(p => p.id === pId);
+                    playerListHtml += `
+                        <div class="flex items-center justify-between text-xs py-1 border-b border-brand-border/40 last:border-none">
+                            <span class="text-gray-400 font-mono text-[10px]">P${idx + 1}</span>
+                            <span class="font-bold text-white truncate max-w-[140px]">${player ? escapeHtml(player.name) : 'TBD'}</span>
+                        </div>
+                    `;
+                });
+
+                const groupCard = document.createElement('div');
+                groupCard.className = "bg-brand-card border border-brand-border rounded-xl p-3 shadow-md";
+                groupCard.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-brand-border pb-2 mb-2">
+                        <h4 class="font-black text-brand-cyan text-sm">GROUP ${gKey}</h4>
+                        <span class="text-[10px] text-gray-500">${playerIds.length} Players</span>
+                    </div>
+                    <div class="space-y-1">
+                        ${playerListHtml}
+                    </div>
+                `;
+                container.appendChild(groupCard);
+            });
+        }
+
+        function renderGroupFixtures() {
+            const container = document.getElementById('fixtures-container-list');
+            const filterVal = document.getElementById('fixture-group-filter')?.value || 'ALL';
+            if (!container) return;
+            container.innerHTML = '';
+
+            let fixtures = appState.groupFixtures || [];
+            if (filterVal !== 'ALL') {
+                fixtures = fixtures.filter(f => f.group === filterVal);
+            }
+
+            if (fixtures.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 bg-brand-card/40 border border-brand-border rounded-xl text-gray-400 text-xs">
+                        No fixtures generated yet.
+                    </div>
+                `;
+                return;
+            }
+
+            fixtures.forEach(fix => {
+                const p1 = appState.players.find(p => p.id === fix.p1Id);
+                const p2 = appState.players.find(p => p.id === fix.p2Id);
+
+                const item = document.createElement('div');
+                item.className = "bg-brand-card border border-brand-border rounded-xl p-3 flex flex-wrap items-center justify-between gap-2";
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="bg-brand-cyan/10 text-brand-cyan font-bold text-[10px] px-2 py-0.5 rounded border border-brand-cyan/20">
+                            Group ${fix.group} - R${fix.round}
+                        </span>
+                        <span class="text-xs text-gray-400 font-medium">Match #${fix.id}</span>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-3 font-bold text-xs sm:text-sm text-white my-1 w-full sm:w-auto">
+                        <span class="truncate max-w-[120px] text-right">${p1 ? escapeHtml(p1.name) : 'P1'}</span>
+                        <div class="bg-slate-900 px-3 py-1 rounded-lg border border-brand-border text-brand-cyan font-mono font-black">
+                            ${fix.completed ? `${fix.p1Score} - ${fix.p2Score}` : 'VS'}
+                        </div>
+                        <span class="truncate max-w-[120px] text-left">${p2 ? escapeHtml(p2.name) : 'P2'}</span>
+                    </div>
+
+                    <div>
+                        ${fix.completed ? 
+                            '<span class="text-[10px] text-brand-green bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20 font-bold">Finished</span>' : 
+                            '<span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-bold">Pending</span>'}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderResultSubmitList() {
+            const container = document.getElementById('result-submit-matches-list');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const isLocked = !appState.isManagementLoggedIn;
+
+            if (appState.groupFixtures.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">No fixtures available to submit results.</div>`;
+                return;
+            }
+
+            appState.groupFixtures.forEach(fix => {
+                const p1 = appState.players.find(p => p.id === fix.p1Id);
+                const p2 = appState.players.find(p => p.id === fix.p2Id);
+
+                const card = document.createElement('div');
+                card.className = "bg-brand-card border border-brand-border rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3";
+                
+                card.innerHTML = `
+                    <div class="text-xs">
+                        <span class="bg-brand-purple/10 text-brand-purple font-bold px-2 py-0.5 rounded border border-brand-purple/20 text-[10px]">
+                            Group ${fix.group} - Round ${fix.round}
+                        </span>
+                        <div class="text-white font-bold mt-1">
+                            ${p1 ? escapeHtml(p1.name) : 'P1'} <span class="text-gray-500">vs</span> ${p2 ? escapeHtml(p2.name) : 'P2'}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input type="number" id="score-p1-${fix.id}" min="0" max="99" value="${fix.p1Score !== null ? fix.p1Score : ''}" ${isLocked ? 'disabled' : ''} placeholder="0" class="w-12 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1.5 rounded outline-none disabled:opacity-50">
+                        <span class="text-xs font-bold text-gray-500">-</span>
+                        <input type="number" id="score-p2-${fix.id}" min="0" max="99" value="${fix.p2Score !== null ? fix.p2Score : ''}" ${isLocked ? 'disabled' : ''} placeholder="0" class="w-12 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1.5 rounded outline-none disabled:opacity-50">
+                        
+                        <button onclick="submitMatchScore(${fix.id})" ${isLocked ? 'disabled' : ''} class="bg-brand-green hover:bg-emerald-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded shadow transition disabled:opacity-40">
+                            Save
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function submitMatchScore(fixtureId) {
+            if (!appState.isManagementLoggedIn) {
+                showToast('Please login via EPR Management Login to save match scores!', 'error');
+                return;
+            }
+
+            const p1Val = document.getElementById(`score-p1-${fixtureId}`)?.value;
+            const p2Val = document.getElementById(`score-p2-${fixtureId}`)?.value;
+
+            if (p1Val === '' || p2Val === '') {
+                showToast('Please enter scores for both players', 'error');
+                return;
+            }
+
+            const fixture = appState.groupFixtures.find(f => f.id === fixtureId);
+            if (fixture) {
+                fixture.p1Score = parseInt(p1Val, 10);
+                fixture.p2Score = parseInt(p2Val, 10);
+                fixture.completed = true;
+                saveStateToStorage();
+                showToast(`Group ${fixture.group} Match #${fixtureId} result saved!`, 'success');
+                renderGroupPointsTables();
+            }
+        }
+
+        function renderGroupPointsTables() {
+            const container = document.getElementById('points-tables-container');
+            const filterVal = document.getElementById('points-group-filter')?.value || 'ALL';
+            if (!container) return;
+            container.innerHTML = '';
+
+            let groupKeys = Object.keys(appState.groups).sort();
+            if (filterVal !== 'ALL') {
+                groupKeys = groupKeys.filter(g => g === filterVal);
+            }
+
+            if (groupKeys.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">No points tables available.</div>`;
+                return;
+            }
+
+            groupKeys.forEach(gKey => {
+                const playerIds = appState.groups[gKey] || [];
+                const tableData = calculateGroupPointsData(gKey, playerIds);
+
+                let tableRows = '';
+                tableData.forEach((row, idx) => {
+                    const isTop2 = idx < 2;
+                    const highlightClass = isTop2 ? 'bg-emerald-500/10 text-emerald-300 font-bold' : 'text-gray-300';
+                    const posBadge = isTop2 ? 
+                        `<span class="bg-brand-green/20 text-brand-green px-1.5 py-0.5 rounded text-[9px] font-black">Q</span>` : 
+                        `<span class="text-gray-500 text-[10px]">${idx + 1}</span>`;
+
+                    tableRows += `
+                        <tr class="border-b border-brand-border/40 text-xs ${highlightClass}">
+                            <td class="p-2 text-center">${posBadge}</td>
+                            <td class="p-2 font-medium truncate max-w-[130px]">${escapeHtml(row.name)}</td>
+                            <td class="p-2 text-center">${row.p}</td>
+                            <td class="p-2 text-center">${row.w}</td>
+                            <td class="p-2 text-center">${row.d}</td>
+                            <td class="p-2 text-center">${row.l}</td>
+                            <td class="p-2 text-center hidden sm:table-cell">${row.gf}</td>
+                            <td class="p-2 text-center hidden sm:table-cell">${row.ga}</td>
+                            <td class="p-2 text-center">${row.gd > 0 ? '+' + row.gd : row.gd}</td>
+                            <td class="p-2 text-center font-black text-brand-cyan">${row.pts}</td>
+                        </tr>
+                    `;
+                });
+
+                const tableBox = document.createElement('div');
+                tableBox.className = "bg-brand-card border border-brand-border rounded-xl p-3 shadow-lg";
+                tableBox.innerHTML = `
+                    <div class="flex items-center justify-between mb-2 pb-1 border-b border-brand-border">
+                        <h4 class="font-black text-white text-sm">GROUP ${gKey} STANDINGS</h4>
+                        <span class="text-[10px] text-gray-400">Green = Top 2 Qualified</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-[10px] uppercase text-gray-400 border-b border-brand-border bg-slate-900/60">
+                                    <th class="p-2 text-center">Pos</th>
+                                    <th class="p-2">Player</th>
+                                    <th class="p-2 text-center">P</th>
+                                    <th class="p-2 text-center">W</th>
+                                    <th class="p-2 text-center">D</th>
+                                    <th class="p-2 text-center">L</th>
+                                    <th class="p-2 text-center hidden sm:table-cell">GF</th>
+                                    <th class="p-2 text-center hidden sm:table-cell">GA</th>
+                                    <th class="p-2 text-center">GD</th>
+                                    <th class="p-2 text-center text-brand-cyan">PTS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                container.appendChild(tableBox);
+            });
+        }
+
+        function calculateGroupPointsData(groupKey, playerIds) {
+            const stats = {};
+            playerIds.forEach(pId => {
+                const player = appState.players.find(p => p.id === pId);
+                stats[pId] = {
+                    id: pId,
+                    name: player ? player.name : 'Unknown',
+                    p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0
+                };
+            });
+
+            const fixtures = appState.groupFixtures.filter(f => f.group === groupKey && f.completed);
+            fixtures.forEach(fix => {
+                const s1 = stats[fix.p1Id];
+                const s2 = stats[fix.p2Id];
+
+                if (s1 && s2) {
+                    s1.p++; s2.p++;
+                    s1.gf += fix.p1Score; s1.ga += fix.p2Score;
+                    s2.gf += fix.p2Score; s2.ga += fix.p1Score;
+
+                    if (fix.p1Score > fix.p2Score) {
+                        s1.w++; s1.pts += 3;
+                        s2.l++;
+                    } else if (fix.p2Score > fix.p1Score) {
+                        s2.w++; s2.pts += 3;
+                        s1.l++;
+                    } else {
+                        s1.d++; s1.pts += 1;
+                        s2.d++; s2.pts += 1;
+                    }
+                }
+            });
+
+            const array = Object.values(stats);
+            array.forEach(item => { item.gd = item.gf - item.ga; });
+
+            // Sort by PTS -> GD -> GF -> Name
+            array.sort((a, b) => {
+                if (b.pts !== a.pts) return b.pts - a.pts;
+                if (b.gd !== a.gd) return b.gd - a.gd;
+                if (b.gf !== a.gf) return b.gf - a.gf;
+                return a.name.localeCompare(b.name);
+            });
+
+            return array;
+        }
+
+        function renderQualifiedPlayers() {
+            const container = document.getElementById('qualified-players-grid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const groupKeys = Object.keys(appState.groups).sort();
+            let count = 0;
+
+            groupKeys.forEach(gKey => {
+                const pIds = appState.groups[gKey] || [];
+                const standings = calculateGroupPointsData(gKey, pIds);
+                const top2 = standings.slice(0, 2);
+
+                top2.forEach((p, idx) => {
+                    count++;
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-900 border border-brand-green/30 rounded-xl p-2.5 flex items-center justify-between text-xs";
+                    card.innerHTML = `
+                        <div>
+                            <span class="text-[9px] text-brand-green font-bold bg-green-500/10 px-1.5 py-0.5 rounded mr-1">
+                                Group ${gKey} (${idx + 1}${idx === 0 ? 'st' : 'nd'})
+                            </span>
+                            <span class="font-bold text-white">${escapeHtml(p.name)}</span>
+                        </div>
+                        <span class="text-brand-cyan font-mono text-[10px] font-bold">${p.pts} PTS</span>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+
+            if (count === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-6 text-gray-500 text-xs">No qualified players computed yet. Complete group matches first.</div>`;
+            }
+        }
+
+        /* ==========================================================================
+           KNOCKOUT STAGE LOGIC & RENDERING
+           ========================================================================== */
+        function renderKnockouts() {
+            renderKnockoutRoundMatches('r32');
+        }
+
+        function renderKnockoutRoundMatches(roundKey) {
+            const container = document.getElementById('knockout-matches-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const matches = appState.knockouts[roundKey] || [];
+            const isLocked = !appState.isManagementLoggedIn;
+
+            if (roundKey === 'champion') {
+                const champId = appState.knockouts.champion;
+                const champ = appState.players.find(p => p.id === champId);
+
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-gradient-to-b from-brand-card via-slate-900 to-brand-card border border-amber-500/40 rounded-2xl p-6 shadow-2xl space-y-3">
+                        <div class="inline-block p-4 rounded-full bg-amber-500/10 text-amber-400 text-5xl mb-2 animate-bounce">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-amber-400 uppercase tracking-widest">TOURNAMENT CHAMPION</h3>
+                        <p class="text-3xl font-black text-white glow-cyan">${champ ? escapeHtml(champ.name) : 'TBD'}</p>
+                        <p class="text-xs text-gray-400 font-mono">Elite Players FC 69 eFootball Championship Winner</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (matches.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 bg-brand-card/40 border border-brand-border rounded-xl text-gray-400 text-xs">
+                        Knockout matches for this round have not been generated yet.
+                    </div>
+                `;
+                return;
+            }
+
+            matches.forEach(m => {
+                const p1 = appState.players.find(p => p.id === m.p1Id);
+                const p2 = appState.players.find(p => p.id === m.p2Id);
+
+                const card = document.createElement('div');
+                card.className = "bg-brand-card border border-brand-border rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3";
+                card.innerHTML = `
+                    <div class="text-xs">
+                        <span class="bg-amber-500/10 text-amber-400 font-bold px-2 py-0.5 rounded border border-amber-500/20 text-[10px]">
+                            Match #${m.id}
+                        </span>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-3 font-bold text-xs sm:text-sm text-white">
+                        <span class="truncate max-w-[120px] text-right">${p1 ? escapeHtml(p1.name) : (m.p1Placeholder || 'TBD')}</span>
+                        
+                        <div class="flex items-center gap-1">
+                            <input type="number" id="kscore-p1-${roundKey}-${m.id}" value="${m.p1Score !== null ? m.p1Score : ''}" ${isLocked ? 'disabled' : ''} placeholder="0" class="w-10 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1 rounded outline-none disabled:opacity-50">
+                            <span class="text-gray-500 font-bold text-xs">-</span>
+                            <input type="number" id="kscore-p2-${roundKey}-${m.id}" value="${m.p2Score !== null ? m.p2Score : ''}" ${isLocked ? 'disabled' : ''} placeholder="0" class="w-10 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1 rounded outline-none disabled:opacity-50">
+                        </div>
+
+                        <span class="truncate max-w-[120px] text-left">${p2 ? escapeHtml(p2.name) : (m.p2Placeholder || 'TBD')}</span>
+                    </div>
+
+                    <button onclick="saveKnockoutScore('${roundKey}', ${m.id})" ${isLocked ? 'disabled' : ''} class="bg-brand-cyan hover:bg-cyan-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded transition disabled:opacity-40">
+                        Save Winner
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function saveKnockoutScore(roundKey, matchId) {
+            if (!appState.isManagementLoggedIn) {
+                showToast('Login required to save knockout score', 'error');
+                return;
+            }
+
+            const s1 = parseInt(document.getElementById(`kscore-p1-${roundKey}-${matchId}`)?.value, 10);
+            const s2 = parseInt(document.getElementById(`kscore-p2-${roundKey}-${matchId}`)?.value, 10);
+
+            if (isNaN(s1) || isNaN(s2)) {
+                showToast('Please enter both scores', 'error');
+                return;
+            }
+
+            if (s1 === s2) {
+                showToast('Knockout matches cannot end in a draw! Extra time/penalties winner required.', 'error');
+                return;
+            }
+
+            const match = appState.knockouts[roundKey].find(m => m.id === matchId);
+            if (match) {
+                match.p1Score = s1;
+                match.p2Score = s2;
+                match.winnerId = s1 > s2 ? match.p1Id : match.p2Id;
+                match.completed = true;
+
+                // Auto-advance logic to next knockout round
+                advanceKnockoutWinner(roundKey, match);
+
+                saveStateToStorage();
+                showToast(`Match #${matchId} result saved! Winner advanced.`, 'success');
+                renderKnockoutRoundMatches(roundKey);
+            }
+        }
+
+        function advanceKnockoutWinner(currentRound, match) {
+            const roundsOrder = ['r32', 'r16', 'r8', 'semi', 'final'];
+            const currentIndex = roundsOrder.indexOf(currentRound);
+            if (currentIndex === -1 || !match.winnerId) return;
+
+            if (currentRound === 'final') {
+                appState.knockouts.champion = match.winnerId;
+                return;
+            }
+
+            const nextRoundKey = roundsOrder[currentIndex + 1];
+            let nextMatches = appState.knockouts[nextRoundKey];
+
+            if (!nextMatches || nextMatches.length === 0) {
+                // Initialize next round match structure if empty
+                const currentMatchesCount = appState.knockouts[currentRound].length;
+                const nextCount = currentMatchesCount / 2;
+                nextMatches = [];
+                for (let i = 1; i <= nextCount; i++) {
+                    nextMatches.push({
+                        id: i,
+                        p1Id: null,
+                        p2Id: null,
+                        p1Score: null,
+                        p2Score: null,
+                        winnerId: null,
+                        completed: false
+                    });
+                }
+                appState.knockouts[nextRoundKey] = nextMatches;
+            }
+
+            // Target match index in next round
+            const targetNextMatchIndex = Math.floor((match.id - 1) / 2);
+            const targetMatch = nextMatches[targetNextMatchIndex];
+
+            if (targetMatch) {
+                if ((match.id - 1) % 2 === 0) {
+                    targetMatch.p1Id = match.winnerId;
+                } else {
+                    targetMatch.p2Id = match.winnerId;
+                }
+            }
+        }
+
+        /* ==========================================================================
+           FORM HANDLERS & MODAL CONTROL
+           ========================================================================== */
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+
+            const newPlayer = {
+                id: 'P_' + Date.now(),
+                name: document.getElementById('reg-name').value.trim(),
+                gameUid: document.getElementById('reg-game-uid').value.trim(),
+                deviceName: document.getElementById('reg-device').value.trim(),
+                fbPostLink: document.getElementById('reg-fb-post-link').value.trim(),
+                invitationLink: document.getElementById('reg-invitation-link').value.trim(),
+                whatsapp: document.getElementById('reg-whatsapp').value.trim(),
+                fbIdLink: document.getElementById('reg-fb-id-link').value.trim(),
+                status: 'pending'
+            };
+
+            appState.players.push(newPlayer);
+            saveStateToStorage();
+
+            document.getElementById('registration-form').reset();
+            showToast('Registration submitted successfully! Pending EPR Management approval.', 'success');
+            renderAdminPendingList();
+            switchMainTab('home');
+        }
+
+        function handleManagementLogin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('management-pin-input').value;
+
+            if (pin === DEFAULT_MANAGEMENT_PIN) {
+                appState.isManagementLoggedIn = true;
+                saveStateToStorage();
+                closeModal('management-login-modal');
+                updateManagementBadges();
+                showToast('Logged in as EPR Management!', 'success');
+                renderAllViews();
+            } else {
+                showToast('Incorrect Management PIN!', 'error');
+            }
+        }
+
+        function updateManagementBadges() {
+            const statusTag = document.getElementById('management-status-tag');
+            const submitBadge = document.getElementById('submit-access-badge');
+
+            if (appState.isManagementLoggedIn) {
+                if (statusTag) statusTag.innerHTML = `<i class="fa-solid fa-circle-check text-brand-green mr-1"></i>EPR Management`;
+                if (submitBadge) {
+                    submitBadge.innerText = 'Management Unlocked';
+                    submitBadge.className = 'text-xs px-2.5 py-1 rounded-lg bg-green-500/10 text-brand-green border border-green-500/20 font-bold';
+                }
+            } else {
+                if (statusTag) statusTag.innerHTML = `<i class="fa-solid fa-lock text-amber-400 mr-1"></i>Guest`;
+            }
+        }
+
+        function saveSupabaseConfig(e) {
+            e.preventDefault();
+            appState.supabaseUrl = document.getElementById('supabase-url-input').value.trim();
+            appState.supabaseKey = document.getElementById('supabase-key-input').value.trim();
+            saveStateToStorage();
+            initSupabase();
+            closeModal('supabase-config-modal');
+            showToast('Supabase settings updated!', 'success');
+        }
+
+        /* ==========================================================================
+           SECRET ADMIN PANEL FUNCTIONS
+           ========================================================================== */
+        function renderAdminPendingList() {
+            const container = document.getElementById('admin-pending-list');
+            const countBadge = document.getElementById('admin-pending-count');
+            if (!container) return;
+
+            const pending = appState.players.filter(p => p.status === 'pending');
+            if (countBadge) countBadge.innerText = pending.length;
+
+            container.innerHTML = '';
+
+            if (pending.length === 0) {
+                container.innerHTML = `<div class="text-center py-4 text-gray-500 text-xs">No pending player registrations.</div>`;
+                return;
+            }
+
+            pending.forEach(p => {
+                const item = document.createElement('div');
+                item.className = "bg-slate-900 p-2.5 rounded-lg border border-brand-border flex items-center justify-between text-xs";
+                item.innerHTML = `
+                    <div>
+                        <div class="font-bold text-white">${escapeHtml(p.name)}</div>
+                        <div class="text-[10px] text-gray-400">UID: ${escapeHtml(p.gameUid)} | ${escapeHtml(p.deviceName)}</div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="approvePlayer('${p.id}')" class="bg-brand-green hover:bg-emerald-400 text-slate-950 font-black text-[10px] px-2.5 py-1 rounded">
+                            Approve
+                        </button>
+                        <button onclick="rejectPlayer('${p.id}')" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 font-bold text-[10px] px-2 py-1 rounded border border-red-500/30">
+                            Reject
+                        </button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function approvePlayer(pId) {
+            const player = appState.players.find(p => p.id === pId);
+            if (player) {
+                player.status = 'approved';
+                saveStateToStorage();
+                renderAllViews();
+                showToast(`Approved ${player.name}`, 'success');
+            }
+        }
+
+        function rejectPlayer(pId) {
+            appState.players = appState.players.filter(p => p.id !== pId);
+            saveStateToStorage();
+            renderAllViews();
+            showToast('Player rejected and removed.', 'info');
+        }
+
+        function seedDemo64Players() {
+            const existingApproved = appState.players.filter(p => p.status === 'approved').length;
+            const needed = 64 - existingApproved;
+
+            if (needed <= 0) {
+                showToast('64 Approved players already exist!', 'info');
+                return;
+            }
+
+            for (let i = 1; i <= needed; i++) {
+                const idNum = existingApproved + i;
+                appState.players.push({
+                    id: 'P_DEMO_' + idNum,
+                    name: `Player_${idNum}`,
+                    gameUid: `UID-${100000 + idNum}`,
+                    deviceName: idNum % 2 === 0 ? 'iPhone 14' : 'Galaxy S22',
+                    fbPostLink: 'https://facebook.com',
+                    invitationLink: 'https://m.me',
+                    whatsapp: '+8801700000000',
+                    fbIdLink: 'https://facebook.com',
+                    status: 'approved'
+                });
+            }
+
+            saveStateToStorage();
+            renderAllViews();
+            showToast(`Seeded ${needed} demo players to reach 64 total!`, 'success');
+        }
+
+        function adminDrawGroups() {
+            const approved = appState.players.filter(p => p.status === 'approved');
+            if (approved.length < 64) {
+                if (!confirm(`Currently only ${approved.length} approved players exist. Do you still want to draw groups?`)) return;
+            }
+
+            // Shuffle players randomly
+            const shuffled = [...approved].sort(() => 0.5 - Math.random());
+            const groupLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
+            
+            appState.groups = {};
+            groupLetters.forEach(letter => { appState.groups[letter] = []; });
+
+            shuffled.forEach((p, idx) => {
+                const groupIdx = idx % 16;
+                const gLetter = groupLetters[groupIdx];
+                appState.groups[gLetter].push(p.id);
+            });
+
+            saveStateToStorage();
+            renderAllViews();
+            showToast('16 Groups (A-P) randomly drawn successfully!', 'success');
+        }
+
+        function adminGenerateGroupFixtures() {
+            if (Object.keys(appState.groups).length === 0) {
+                showToast('Draw groups first before generating fixtures!', 'error');
+                return;
+            }
+
+            appState.groupFixtures = [];
+            let fixId = 1;
+
+            Object.keys(appState.groups).forEach(gKey => {
+                const pIds = appState.groups[gKey];
+                if (pIds.length >= 2) {
+                    // Generate Round-Robin matches
+                    // R1: 0 vs 1, 2 vs 3
+                    // R2: 0 vs 2, 1 vs 3
+                    // R3: 0 vs 3, 1 vs 2
+                    if (pIds[0] && pIds[1]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 1, p1Id: pIds[0], p2Id: pIds[1], p1Score: null, p2Score: null, completed: false });
+                    if (pIds[2] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 1, p1Id: pIds[2], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
+
+                    if (pIds[0] && pIds[2]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 2, p1Id: pIds[0], p2Id: pIds[2], p1Score: null, p2Score: null, completed: false });
+                    if (pIds[1] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 2, p1Id: pIds[1], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
+
+                    if (pIds[0] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 3, p1Id: pIds[0], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
+                    if (pIds[1] && pIds[2]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 3, p1Id: pIds[1], p2Id: pIds[2], p1Score: null, p2Score: null, completed: false });
+                }
+            });
+
+            saveStateToStorage();
+            renderAllViews();
+            showToast('Group Stage Round-Robin fixtures generated!', 'success');
+        }
+
+        function adminGenerateKnockouts() {
+            const groupKeys = Object.keys(appState.groups).sort();
+            if (groupKeys.length < 16) {
+                showToast('Requires 16 Groups (A-P) to generate Round of 32 World Cup knockout style pairings!', 'error');
+                return;
+            }
+
+            // World Cup Pairings for Round of 32:
+            // Match 1: A1 vs B2, Match 2: C1 vs D2, Match 3: E1 vs F2, Match 4: G1 vs H2
+            // Match 5: I1 vs J2, Match 6: K1 vs L2, Match 7: M1 vs N2, Match 8: O1 vs P2
+            // Match 9: B1 vs A2, Match 10: D1 vs C2, Match 11: F1 vs E2, Match 12: H1 vs G2
+            // Match 13: J1 vs I2, Match 14: L1 vs K2, Match 15: N1 vs M2, Match 16: P1 vs O2
+            const pairings = [
+                ['A', 'B'], ['C', 'D'], ['E', 'F'], ['G', 'H'],
+                ['I', 'J'], ['K', 'L'], ['M', 'N'], ['O', 'P'],
+                ['B', 'A'], ['D', 'C'], ['F', 'E'], ['H', 'G'],
+                ['J', 'I'], ['L', 'K'], ['N', 'M'], ['P', 'O']
+            ];
+
+            const r32Matches = [];
+
+            pairings.forEach((pair, idx) => {
+                const g1Standings = calculateGroupPointsData(pair[0], appState.groups[pair[0]] || []);
+                const g2Standings = calculateGroupPointsData(pair[1], appState.groups[pair[1]] || []);
+
+                const p1Winner = g1Standings[0] ? g1Standings[0].id : null;
+                const p2RunnerUp = g2Standings[1] ? g2Standings[1].id : null;
+
+                r32Matches.push({
+                    id: idx + 1,
+                    p1Id: p1Winner,
+                    p2Id: p2RunnerUp,
+                    p1Placeholder: `${pair[0]}1`,
+                    p2Placeholder: `${pair[1]}2`,
+                    p1Score: null,
+                    p2Score: null,
+                    winnerId: null,
+                    completed: false
+                });
+            });
+
+            appState.knockouts.r32 = r32Matches;
+            appState.knockouts.r16 = [];
+            appState.knockouts.r8 = [];
+            appState.knockouts.semi = [];
+            appState.knockouts.final = [];
+            appState.knockouts.champion = null;
+
+            saveStateToStorage();
+            renderKnockouts();
+            showToast('Round of 32 Knockout bracket generated!', 'success');
+        }
+
+        function resetTournamentData() {
+            if (confirm('Are you sure you want to RESET all tournament fixtures, groups, and scores? Approved players will be kept.')) {
+                appState.groups = {};
+                appState.groupFixtures = [];
+                appState.knockouts = { r32: [], r16: [], r8: [], semi: [], final: [], champion: null };
+                saveStateToStorage();
+                renderAllViews();
+                showToast('Tournament data reset complete.', 'info');
+            }
+        }
+
+        /* ==========================================================================
+           UTILITY & UI HELPERS
+           ========================================================================== */
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            let bgClass = 'bg-slate-900 border-brand-cyan text-brand-cyan';
+            if (type === 'success') bgClass = 'bg-slate-900 border-brand-green text-brand-green';
+            if (type === 'error') bgClass = 'bg-slate-900 border-red-500 text-red-400';
+
+            toast.className = `p-3 rounded-xl border ${bgClass} text-xs font-bold shadow-2xl transition transform translate-y-2 pointer-events-auto flex items-center gap-2 max-w-xs`;
+            toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&rawgt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>
