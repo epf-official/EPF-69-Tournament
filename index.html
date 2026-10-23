@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Players FC - 69 eFootball Tournament</title>
+    <title>ELITE PLAYMAKERS FC - 69 eFootball Tournament</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -53,6 +53,8 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #0b1120; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .tab-btn.active {
             background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
@@ -72,7 +74,7 @@
 
     <!-- TOP HEADER / NAV -->
     <header class="bg-brand-card/90 backdrop-blur-md border-b border-brand-border sticky top-0 z-40 px-3 py-2.5 shadow-lg">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
             <!-- Brand Logo -->
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchMainTab('home')">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan via-brand-purple to-brand-magenta p-0.5 shadow-lg glow-cyan flex items-center justify-center">
@@ -81,8 +83,8 @@
                     </div>
                 </div>
                 <div>
-                    <h1 class="text-lg font-black tracking-wider uppercase bg-gradient-to-r from-brand-cyan via-white to-brand-purple bg-clip-text text-transparent">
-                        ELITE PLAYERS FC
+                    <h1 class="text-base sm:text-lg font-black tracking-wider uppercase bg-gradient-to-r from-brand-cyan via-white to-brand-purple bg-clip-text text-transparent">
+                        ELITE PLAYMAKERS FC
                     </h1>
                     <div class="flex items-center space-x-2 text-[10px] text-gray-400 font-semibold tracking-wide">
                         <span class="bg-brand-cyan/10 text-brand-cyan px-1.5 py-0.5 rounded border border-brand-cyan/20">69 TOURNAMENT</span>
@@ -92,13 +94,10 @@
             </div>
 
             <!-- Header Quick Action Buttons -->
-            <div class="flex items-center gap-1.5 flex-wrap">
+            <div class="flex items-center gap-1.5">
                 <button onclick="openModal('management-login-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 font-medium px-3 py-1.5 rounded-lg border border-amber-500/30 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-key text-amber-400"></i>
                     <span>EPR Login</span>
-                </button>
-                <button onclick="openModal('supabase-config-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-gray-300 font-medium px-2.5 py-1.5 rounded-lg border border-gray-700 transition" title="Supabase Database Settings">
-                    <i class="fa-solid fa-database text-brand-cyan"></i>
                 </button>
             </div>
         </div>
@@ -107,7 +106,7 @@
     <!-- MAIN CONTAINER -->
     <main class="max-w-7xl mx-auto w-full px-2 sm:px-4 py-4 flex-grow">
 
-        <!-- COMPACT MAIN NAVIGATION BAR (Side-by-Side buttons, non-scroll heavy) -->
+        <!-- COMPACT MAIN NAVIGATION BAR -->
         <nav class="grid grid-cols-3 sm:grid-cols-6 gap-1.5 mb-5 bg-brand-card/60 p-1.5 rounded-xl border border-brand-border">
             <button onclick="switchMainTab('registration')" id="tab-btn-registration" class="tab-btn text-xs font-semibold py-2 px-1 rounded-lg border border-transparent text-gray-300 hover:text-white transition flex flex-col sm:flex-row items-center justify-center gap-1">
                 <i class="fa-solid fa-file-pen text-sm"></i>
@@ -152,7 +151,7 @@
                 </span>
                 
                 <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white mb-2">
-                    ELITE PLAYERS FC
+                    ELITE PLAYMAKERS FC
                 </h2>
                 <p class="text-brand-cyan text-lg sm:text-xl font-bold tracking-wide mb-4">
                     69 eFootball Championship 2026
@@ -239,10 +238,15 @@
                         <input type="url" id="reg-fb-post-link" required placeholder="https://facebook.com/..." class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
                     </div>
 
-                    <!-- Gmail / Messenger Invitation Link -->
+                    <!-- Email Field -->
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">Gmail / Messenger Invitation Link <span class="text-red-400">*</span></label>
-                        <input type="text" id="reg-invitation-link" required placeholder="Messenger Group Link / Email address" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">
+                            Email Address / Gmail <span class="text-red-400">*</span>
+                        </label>
+                        <p class="text-[11px] text-brand-cyan mb-1.5 font-medium">
+                            📌 এই ইমেইলেই মেসেঞ্জার ও টুর্নামেন্ট ইনভাইটেশন লিংক পাঠানো হবে
+                        </p>
+                        <input type="email" id="reg-invitation-link" required placeholder="e.g. yourname@gmail.com" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
                     </div>
 
                     <!-- WhatsApp & FB ID Link -->
@@ -279,7 +283,7 @@
                 </div>
             </div>
 
-            <!-- Player Grid (Compact Cards) -->
+            <!-- Player Grid -->
             <div id="players-card-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 <!-- Dynamically Rendered Player Cards -->
             </div>
@@ -287,21 +291,21 @@
 
         <!-- VIEW 4: GROUP STAGE SECTION -->
         <section id="view-group-stage" class="view-section hidden space-y-4">
-            <!-- Group Stage Sub-Menu Navigation Tabs (Side-by-side compact buttons) -->
-            <div class="flex flex-wrap items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border justify-center sm:justify-start">
-                <button onclick="switchGroupSubTab('group-view')" id="subtab-btn-group-view" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition">
+            <!-- Group Stage Sub-Menu Navigation Tabs (Side-by-side horizontal scrolling) -->
+            <div class="flex items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border overflow-x-auto no-scrollbar whitespace-nowrap">
+                <button onclick="switchGroupSubTab('group-view')" id="subtab-btn-group-view" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition shrink-0">
                     <i class="fa-solid fa-border-all mr-1"></i> Group
                 </button>
-                <button onclick="switchGroupSubTab('fixture-view')" id="subtab-btn-fixture-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchGroupSubTab('fixture-view')" id="subtab-btn-fixture-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     <i class="fa-solid fa-calendar-days mr-1"></i> Fixture
                 </button>
-                <button onclick="switchGroupSubTab('result-submit-view')" id="subtab-btn-result-submit-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchGroupSubTab('result-submit-view')" id="subtab-btn-result-submit-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     <i class="fa-solid fa-pen-to-square mr-1"></i> Result Submit
                 </button>
-                <button onclick="switchGroupSubTab('points-table-view')" id="subtab-btn-points-table-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchGroupSubTab('points-table-view')" id="subtab-btn-points-table-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     <i class="fa-solid fa-table-list mr-1"></i> Points Table
                 </button>
-                <button onclick="switchGroupSubTab('qualified-view')" id="subtab-btn-qualified-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchGroupSubTab('qualified-view')" id="subtab-btn-qualified-view" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     <i class="fa-solid fa-circle-check mr-1 text-brand-green"></i> Qualified For Next Round
                 </button>
             </div>
@@ -315,7 +319,6 @@
 
             <!-- SUBVIEW 2: FIXTURE VIEW -->
             <div id="group-subview-fixture-view" class="group-subview hidden space-y-3">
-                <!-- Group Filter Bar -->
                 <div class="flex items-center justify-between bg-brand-card p-2.5 rounded-xl border border-brand-border">
                     <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-filter mr-1 text-brand-cyan"></i> Filter Group:</span>
                     <select id="fixture-group-filter" onchange="renderGroupFixtures()" class="bg-slate-900 border border-brand-border text-brand-cyan text-xs font-bold rounded-lg px-3 py-1.5 outline-none">
@@ -377,24 +380,23 @@
 
         <!-- VIEW 5: KNOCKOUT STAGE SECTION -->
         <section id="view-knockout-stage" class="view-section hidden space-y-4">
-            <!-- Knockout Round Navigation Buttons -->
-            <div class="flex flex-wrap items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border justify-center sm:justify-start">
-                <button onclick="switchKnockoutRound('r32')" id="kround-btn-r32" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition">
+            <div class="flex items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border overflow-x-auto no-scrollbar whitespace-nowrap">
+                <button onclick="switchKnockoutRound('r32')" id="kround-btn-r32" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition shrink-0">
                     Round of 32
                 </button>
-                <button onclick="switchKnockoutRound('r16')" id="kround-btn-r16" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchKnockoutRound('r16')" id="kround-btn-r16" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     Round of 16
                 </button>
-                <button onclick="switchKnockoutRound('r8')" id="kround-btn-r8" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchKnockoutRound('r8')" id="kround-btn-r8" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     Quarter Final
                 </button>
-                <button onclick="switchKnockoutRound('semi')" id="kround-btn-semi" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition">
+                <button onclick="switchKnockoutRound('semi')" id="kround-btn-semi" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
                     Semi Final
                 </button>
-                <button onclick="switchKnockoutRound('final')" id="kround-btn-final" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-amber-400 font-bold transition">
+                <button onclick="switchKnockoutRound('final')" id="kround-btn-final" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-amber-400 font-bold transition shrink-0">
                     <i class="fa-solid fa-trophy mr-1"></i> Final
                 </button>
-                <button onclick="switchKnockoutRound('champion')" id="kround-btn-champion" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-brand-green font-bold transition">
+                <button onclick="switchKnockoutRound('champion')" id="kround-btn-champion" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-brand-green font-bold transition shrink-0">
                     <i class="fa-solid fa-crown mr-1"></i> Champion
                 </button>
             </div>
@@ -410,7 +412,7 @@
                 <div class="border-b border-brand-border pb-3">
                     <h2 class="text-xl font-black text-white flex items-center gap-2">
                         <i class="fa-solid fa-book-bookmark text-brand-cyan"></i>
-                        <span>ELITE PLAYERS FC - TOURNAMENT RULES</span>
+                        <span>ELITE PLAYMAKERS FC - TOURNAMENT RULES</span>
                     </h2>
                     <p class="text-xs text-gray-400">Strict adherence to rules is required for all participating players.</p>
                 </div>
@@ -457,7 +459,7 @@
     <footer class="bg-brand-card/80 border-t border-brand-border py-4 px-3 text-center text-xs text-gray-500">
         <div class="max-w-7xl mx-auto space-y-1">
             <p id="secret-admin-trigger" class="cursor-pointer select-none hover:text-brand-cyan transition font-medium" title="Double click for Secret EPR Admin Panel">
-                &copy; <span id="year-span">2026</span> Elite Players FC / EPR Management. All Rights Reserved.
+                &copy; <span id="year-span">2026</span> ELITE PLAYMAKERS FC / EPR Management. All Rights Reserved.
             </p>
             <p class="text-[10px] text-gray-600">Built for eFootball 69 Tournament. Double-click copyright above for Admin Panel.</p>
         </div>
@@ -538,40 +540,6 @@
         </div>
     </div>
 
-    <!-- MODAL 3: SUPABASE CONFIGURATION MODAL -->
-    <div id="supabase-config-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3">
-        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4">
-            <div class="flex items-center justify-between border-b border-brand-border pb-3">
-                <h3 class="font-black text-white text-base flex items-center gap-2">
-                    <i class="fa-solid fa-database text-brand-cyan"></i>
-                    <span>Supabase API Settings</span>
-                </h3>
-                <button onclick="closeModal('supabase-config-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <p class="text-xs text-gray-400 leading-relaxed">
-                Connect your Supabase Cloud Database URL and Anon Key. If left empty, the application will operate using local persistence fallback automatically.
-            </p>
-
-            <form onsubmit="saveSupabaseConfig(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Supabase URL</label>
-                    <input type="text" id="supabase-url-input" placeholder="https://your-project.supabase.co" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2 outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Supabase Anon Key</label>
-                    <input type="password" id="supabase-key-input" placeholder="eyJhbGciOiJIUzI1Ni..." class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2 outline-none">
-                </div>
-
-                <div class="flex items-center gap-2 pt-2">
-                    <button type="submit" class="flex-1 bg-brand-cyan hover:bg-cyan-400 text-slate-950 font-black text-xs py-2.5 rounded-lg transition">
-                        SAVE SUPABASE CONFIG
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- NOTIFICATION TOAST CONTAINER -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
@@ -608,7 +576,6 @@
            ========================================================================== */
         window.addEventListener('DOMContentLoaded', () => {
             loadStateFromStorage();
-            initSupabase();
             renderAllViews();
 
             // Secret Admin Trigger listener (Double Click)
@@ -642,17 +609,6 @@
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
             } catch (e) {
                 console.error("Failed to save state:", e);
-            }
-        }
-
-        function initSupabase() {
-            if (appState.supabaseUrl && appState.supabaseKey && window.supabase) {
-                try {
-                    supabaseClient = window.supabase.createClient(appState.supabaseUrl, appState.supabaseKey);
-                    console.log("Supabase Client Initialized");
-                } catch (err) {
-                    console.error("Supabase init error:", err);
-                }
             }
         }
 
@@ -733,7 +689,8 @@
             const grid = document.getElementById('players-card-grid');
             const approvedPlayers = appState.players.filter(p => p.status === 'approved');
             
-            document.getElementById('player-count-badge').innerText = approvedPlayers.length;
+            const badge = document.getElementById('player-count-badge');
+            if (badge) badge.innerText = approvedPlayers.length;
 
             if (!grid) return;
             grid.innerHTML = '';
@@ -1152,7 +1109,7 @@
                         </div>
                         <h3 class="text-2xl font-black text-amber-400 uppercase tracking-widest">TOURNAMENT CHAMPION</h3>
                         <p class="text-3xl font-black text-white glow-cyan">${champ ? escapeHtml(champ.name) : 'TBD'}</p>
-                        <p class="text-xs text-gray-400 font-mono">Elite Players FC 69 eFootball Championship Winner</p>
+                        <p class="text-xs text-gray-400 font-mono">ELITE PLAYMAKERS FC 69 eFootball Championship Winner</p>
                     </div>
                 `;
                 return;
@@ -1249,7 +1206,6 @@
             let nextMatches = appState.knockouts[nextRoundKey];
 
             if (!nextMatches || nextMatches.length === 0) {
-                // Initialize next round match structure if empty
                 const currentMatchesCount = appState.knockouts[currentRound].length;
                 const nextCount = currentMatchesCount / 2;
                 nextMatches = [];
@@ -1267,7 +1223,6 @@
                 appState.knockouts[nextRoundKey] = nextMatches;
             }
 
-            // Target match index in next round
             const targetNextMatchIndex = Math.floor((match.id - 1) / 2);
             const targetMatch = nextMatches[targetNextMatchIndex];
 
@@ -1336,16 +1291,6 @@
             } else {
                 if (statusTag) statusTag.innerHTML = `<i class="fa-solid fa-lock text-amber-400 mr-1"></i>Guest`;
             }
-        }
-
-        function saveSupabaseConfig(e) {
-            e.preventDefault();
-            appState.supabaseUrl = document.getElementById('supabase-url-input').value.trim();
-            appState.supabaseKey = document.getElementById('supabase-key-input').value.trim();
-            saveStateToStorage();
-            initSupabase();
-            closeModal('supabase-config-modal');
-            showToast('Supabase settings updated!', 'success');
         }
 
         /* ==========================================================================
@@ -1421,7 +1366,7 @@
                     gameUid: `UID-${100000 + idNum}`,
                     deviceName: idNum % 2 === 0 ? 'iPhone 14' : 'Galaxy S22',
                     fbPostLink: 'https://facebook.com',
-                    invitationLink: 'https://m.me',
+                    invitationLink: `player${idNum}@gmail.com`,
                     whatsapp: '+8801700000000',
                     fbIdLink: 'https://facebook.com',
                     status: 'approved'
@@ -1439,7 +1384,6 @@
                 if (!confirm(`Currently only ${approved.length} approved players exist. Do you still want to draw groups?`)) return;
             }
 
-            // Shuffle players randomly
             const shuffled = [...approved].sort(() => 0.5 - Math.random());
             const groupLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
             
@@ -1469,10 +1413,6 @@
             Object.keys(appState.groups).forEach(gKey => {
                 const pIds = appState.groups[gKey];
                 if (pIds.length >= 2) {
-                    // Generate Round-Robin matches
-                    // R1: 0 vs 1, 2 vs 3
-                    // R2: 0 vs 2, 1 vs 3
-                    // R3: 0 vs 3, 1 vs 2
                     if (pIds[0] && pIds[1]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 1, p1Id: pIds[0], p2Id: pIds[1], p1Score: null, p2Score: null, completed: false });
                     if (pIds[2] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 1, p1Id: pIds[2], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
 
@@ -1496,11 +1436,6 @@
                 return;
             }
 
-            // World Cup Pairings for Round of 32:
-            // Match 1: A1 vs B2, Match 2: C1 vs D2, Match 3: E1 vs F2, Match 4: G1 vs H2
-            // Match 5: I1 vs J2, Match 6: K1 vs L2, Match 7: M1 vs N2, Match 8: O1 vs P2
-            // Match 9: B1 vs A2, Match 10: D1 vs C2, Match 11: F1 vs E2, Match 12: H1 vs G2
-            // Match 13: J1 vs I2, Match 14: L1 vs K2, Match 15: N1 vs M2, Match 16: P1 vs O2
             const pairings = [
                 ['A', 'B'], ['C', 'D'], ['E', 'F'], ['G', 'H'],
                 ['I', 'J'], ['K', 'L'], ['M', 'N'], ['O', 'P'],
@@ -1591,7 +1526,7 @@
             return String(str)
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
-                .replace(/>/g, '&rawgt;')
+                .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
         }
