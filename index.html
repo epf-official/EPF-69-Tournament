@@ -97,7 +97,7 @@
             <div class="flex items-center gap-1.5">
                 <button onclick="openModal('management-login-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 font-medium px-3 py-1.5 rounded-lg border border-amber-500/30 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-key text-amber-400"></i>
-                    <span>EPR Login</span>
+                    <span>EPF Login</span>
                 </button>
             </div>
         </div>
@@ -157,7 +157,7 @@
                 </p>
 
                 <p class="text-gray-400 text-xs sm:text-sm max-w-xl mx-auto mb-6">
-                    Welcome to the ultimate eFootball battleground organized by EPR Management. Compete across 16 groups, advance through knockouts, and claim glory.
+                    Welcome to the ultimate eFootball battleground organized by EPF Management. Compete across 16 groups, advance through knockouts, and claim glory.
                 </p>
 
                 <div class="flex flex-wrap items-center justify-center gap-3">
@@ -309,7 +309,7 @@
                 <div class="bg-brand-card p-3 rounded-xl border border-brand-border flex items-center justify-between">
                     <div>
                         <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-lock mr-1 text-amber-400"></i> Management Result Entry</h3>
-                        <p class="text-[11px] text-gray-400">Only EPR Management members with valid PIN can submit official match scores.</p>
+                        <p class="text-[11px] text-gray-400">Only EPF Management members with valid PIN can submit official match scores.</p>
                     </div>
                     <div id="submit-access-badge" class="text-xs px-2.5 py-1 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 font-bold">
                         Locked (Guest Mode)
@@ -383,20 +383,20 @@
     <!-- FOOTER WITH SECRET ADMIN ACCESS TRIGGER -->
     <footer class="bg-brand-card/80 border-t border-brand-border py-4 px-3 text-center text-xs text-gray-500">
         <div class="max-w-7xl mx-auto space-y-1">
-            <p id="secret-admin-trigger" class="cursor-pointer select-none hover:text-brand-cyan transition font-medium" title="Double click for Secret EPR Admin Panel">
-                &copy; <span id="year-span">2026</span> ELITE PLAYMAKERS FC / EPR Management. All Rights Reserved.
+            <p id="secret-admin-trigger" class="cursor-pointer select-none hover:text-brand-cyan transition font-medium" title="Double click for Secret EPF Admin Panel">
+                &copy; <span id="year-span">2026</span> ELITE PLAYMAKERS FC / EPF Management. All Rights Reserved.
             </p>
             <p class="text-[10px] text-gray-600">Built for eFootball 69 Tournament. Double-click copyright above for Admin Panel.</p>
         </div>
     </footer>
 
-    <!-- MODAL 1: EPR MANAGEMENT LOGIN MODAL -->
+    <!-- MODAL 1: EPF MANAGEMENT LOGIN MODAL -->
     <div id="management-login-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3">
         <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-sm p-5 shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-brand-border pb-3">
                 <h3 class="font-black text-white text-base flex items-center gap-2">
                     <i class="fa-solid fa-user-shield text-amber-400"></i>
-                    <span>EPR Management Login</span>
+                    <span>EPF Management Login</span>
                 </h3>
                 <button onclick="closeModal('management-login-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -416,7 +416,7 @@
             <div class="p-4 border-b border-brand-border flex items-center justify-between bg-slate-900/50">
                 <h3 class="font-black text-white text-base flex items-center gap-2">
                     <i class="fa-solid fa-user-gear text-brand-purple"></i>
-                    <span>SECRET EPR ADMIN PANEL</span>
+                    <span>SECRET EPF ADMIN PANEL</span>
                 </h3>
                 <button onclick="closeModal('secret-admin-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -457,11 +457,10 @@
         /* ==========================================================================
            GLOBAL STATE & SUPABASE CONFIGURATION
            ========================================================================== */
-        const STORAGE_KEY = 'EPR_TOURNAMENT_APP_STATE_V1';
+        const STORAGE_KEY = 'EPF_TOURNAMENT_APP_STATE_V1';
         const DEFAULT_MANAGEMENT_PIN = 'epfhadivhai';
         const DEFAULT_ADMIN_PIN = 'mahim1971';
 
-        // ⭐ আপনার দেওয়া আসল Supabase URL ও Key যুক্ত করা হলো ⭐
         const SUPABASE_URL = 'https://ssavsqhldfjddlafhusn.supabase.co'; 
         const SUPABASE_KEY = 'sb_publishable_KTSCVzfy_EgbvAPCpkUj3g_mN3-Lrau';
 
@@ -483,7 +482,7 @@
             const secretElem = document.getElementById('secret-admin-trigger');
             if (secretElem) {
                 secretElem.addEventListener('dblclick', () => {
-                    const pin = prompt('Enter Secret EPR Admin PIN:');
+                    const pin = prompt('Enter Secret EPF Admin PIN:');
                     if (pin === DEFAULT_ADMIN_PIN) {
                         openModal('secret-admin-modal');
                     } else if (pin !== null) {
@@ -865,7 +864,7 @@
 
         async function submitMatchScore(fixtureId) {
             if (!appState.isManagementLoggedIn) {
-                showToast('Please login via EPR Management Login to save match scores!', 'error');
+                showToast('Please login via EPF Management Login to save match scores!', 'error');
                 return;
             }
 
@@ -1253,7 +1252,7 @@
             await saveState();
 
             document.getElementById('registration-form').reset();
-            showToast('Registration submitted successfully! Pending EPR Management approval.', 'success');
+            showToast('Registration submitted successfully! Pending EPF Management approval.', 'success');
             renderAdminPendingList();
             switchMainTab('home');
         }
@@ -1267,7 +1266,7 @@
                 saveState();
                 closeModal('management-login-modal');
                 updateManagementBadges();
-                showToast('Logged in as EPR Management!', 'success');
+                showToast('Logged in as EPF Management!', 'success');
                 renderAllViews();
             } else {
                 showToast('Incorrect Management PIN!', 'error');
@@ -1279,7 +1278,7 @@
             const submitBadge = document.getElementById('submit-access-badge');
 
             if (appState.isManagementLoggedIn) {
-                if (statusTag) statusTag.innerHTML = `<i class="fa-solid fa-circle-check text-brand-green mr-1"></i>EPR Management`;
+                if (statusTag) statusTag.innerHTML = `<i class="fa-solid fa-circle-check text-brand-green mr-1"></i>EPF Management`;
                 if (submitBadge) {
                     submitBadge.innerText = 'Management Unlocked';
                     submitBadge.className = 'text-xs px-2.5 py-1 rounded-lg bg-green-500/10 text-brand-green border border-green-500/20 font-bold';
