@@ -141,7 +141,6 @@
 
         <!-- VIEW 1: HOME PAGE -->
         <section id="view-home" class="view-section space-y-4">
-            <!-- Hero Banner Box -->
             <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-brand-card to-slate-900 border border-brand-border p-6 sm:p-8 text-center shadow-2xl">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-cyan/10 rounded-full blur-2xl pointer-events-none"></div>
                 <div class="absolute -left-10 -top-10 w-40 h-40 bg-brand-purple/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -161,7 +160,6 @@
                     Welcome to the ultimate eFootball battleground organized by EPR Management. Compete across 16 groups, advance through knockouts, and claim glory.
                 </p>
 
-                <!-- Quick Action Button Layout -->
                 <div class="flex flex-wrap items-center justify-center gap-3">
                     <button onclick="switchMainTab('registration')" class="bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-sm px-6 py-2.5 rounded-xl shadow-lg glow-cyan transition transform active:scale-95">
                         <i class="fa-solid fa-pen-to-square mr-2"></i> TOURNAMENT REGISTRATION
@@ -175,7 +173,6 @@
                 </div>
             </div>
 
-            <!-- Stats Overview Row -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="bg-brand-card/80 border border-brand-border p-3.5 rounded-xl text-center">
                     <div class="text-gray-400 text-[11px] font-medium uppercase tracking-wider">Total Slots</div>
@@ -208,13 +205,11 @@
                 </div>
 
                 <form id="registration-form" onsubmit="handleRegistrationSubmit(event)" class="space-y-3.5">
-                    <!-- Full Name -->
                     <div>
                         <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name <span class="text-red-400">*</span></label>
                         <input type="text" id="reg-name" required placeholder="Enter your full name" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
                     </div>
 
-                    <!-- Game UID & Device Name -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-gray-300 mb-1">eFootball Game UID <span class="text-red-400">*</span></label>
@@ -226,11 +221,8 @@
                         </div>
                     </div>
 
-                    <!-- Facebook Post Link + Requirement Warning -->
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">
-                            Facebook Post Link <span class="text-red-400">*</span>
-                        </label>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Facebook Post Link <span class="text-red-400">*</span></label>
                         <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-2.5 mb-2 text-[11px] text-amber-300 leading-relaxed">
                             <i class="fa-solid fa-circle-exclamation mr-1 text-amber-400"></i>
                             <strong>Requirement:</strong> Complete all tasks, approve post link and comment section access must be included.
@@ -238,18 +230,12 @@
                         <input type="url" id="reg-fb-post-link" required placeholder="https://facebook.com/..." class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
                     </div>
 
-                    <!-- Email Field -->
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1">
-                            Email Address / Gmail <span class="text-red-400">*</span>
-                        </label>
-                        <p class="text-[11px] text-brand-cyan mb-1.5 font-medium">
-                            📌 এই ইমেইলেই মেসেঞ্জার ও টুর্নামেন্ট ইনভাইটেশন লিংক পাঠানো হবে
-                        </p>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Email Address / Gmail <span class="text-red-400">*</span></label>
+                        <p class="text-[11px] text-brand-cyan mb-1.5 font-medium">📌 এই ইমেইলেই মেসেঞ্জার ও টুর্নামেন্ট ইনভাইটেশন লিংক পাঠানো হবে</p>
                         <input type="email" id="reg-invitation-link" required placeholder="e.g. yourname@gmail.com" class="w-full bg-slate-900 border border-brand-border focus:border-brand-cyan text-white text-xs rounded-lg px-3 py-2.5 outline-none transition">
                     </div>
 
-                    <!-- WhatsApp & FB ID Link -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-gray-300 mb-1">WhatsApp Number <span class="text-red-400">*</span></label>
@@ -261,7 +247,6 @@
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="pt-2">
                         <button type="submit" class="w-full bg-gradient-to-r from-brand-cyan via-blue-600 to-brand-purple hover:opacity-95 text-slate-950 font-black text-sm py-3 rounded-xl shadow-lg transition">
                             <i class="fa-solid fa-paper-plane mr-2"></i> SUBMIT REGISTRATION (PENDING APPROVAL)
@@ -283,15 +268,11 @@
                 </div>
             </div>
 
-            <!-- Player Grid -->
-            <div id="players-card-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                <!-- Dynamically Rendered Player Cards -->
-            </div>
+            <div id="players-card-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
         </section>
 
         <!-- VIEW 4: GROUP STAGE SECTION -->
         <section id="view-group-stage" class="view-section hidden space-y-4">
-            <!-- Group Stage Sub-Menu Navigation Tabs (Side-by-side horizontal scrolling) -->
             <div class="flex items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border overflow-x-auto no-scrollbar whitespace-nowrap">
                 <button onclick="switchGroupSubTab('group-view')" id="subtab-btn-group-view" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition shrink-0">
                     <i class="fa-solid fa-border-all mr-1"></i> Group
@@ -310,14 +291,10 @@
                 </button>
             </div>
 
-            <!-- SUBVIEW 1: GROUP VIEW (Groups A-P) -->
             <div id="group-subview-group-view" class="group-subview space-y-3">
-                <div id="groups-container-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                    <!-- Groups A-P dynamically injected -->
-                </div>
+                <div id="groups-container-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
             </div>
 
-            <!-- SUBVIEW 2: FIXTURE VIEW -->
             <div id="group-subview-fixture-view" class="group-subview hidden space-y-3">
                 <div class="flex items-center justify-between bg-brand-card p-2.5 rounded-xl border border-brand-border">
                     <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-filter mr-1 text-brand-cyan"></i> Filter Group:</span>
@@ -325,13 +302,9 @@
                         <option value="ALL">All Groups (A-P)</option>
                     </select>
                 </div>
-
-                <div id="fixtures-container-list" class="space-y-3">
-                    <!-- Fixtures injected -->
-                </div>
+                <div id="fixtures-container-list" class="space-y-3"></div>
             </div>
 
-            <!-- SUBVIEW 3: RESULT SUBMIT VIEW -->
             <div id="group-subview-result-submit-view" class="group-subview hidden space-y-3">
                 <div class="bg-brand-card p-3 rounded-xl border border-brand-border flex items-center justify-between">
                     <div>
@@ -342,13 +315,9 @@
                         Locked (Guest Mode)
                     </div>
                 </div>
-
-                <div id="result-submit-matches-list" class="space-y-3">
-                    <!-- Matches for result input -->
-                </div>
+                <div id="result-submit-matches-list" class="space-y-3"></div>
             </div>
 
-            <!-- SUBVIEW 4: POINTS TABLE VIEW -->
             <div id="group-subview-points-table-view" class="group-subview hidden space-y-3">
                 <div class="flex items-center justify-between bg-brand-card p-2.5 rounded-xl border border-brand-border">
                     <span class="text-xs font-bold text-gray-300"><i class="fa-solid fa-filter mr-1 text-brand-cyan"></i> Filter Table:</span>
@@ -356,13 +325,9 @@
                         <option value="ALL">All Groups (A-P)</option>
                     </select>
                 </div>
-
-                <div id="points-tables-container" class="space-y-4">
-                    <!-- Tables generated -->
-                </div>
+                <div id="points-tables-container" class="space-y-4"></div>
             </div>
 
-            <!-- SUBVIEW 5: QUALIFIED FOR NEXT ROUND -->
             <div id="group-subview-qualified-view" class="group-subview hidden space-y-3">
                 <div class="bg-brand-card p-4 rounded-xl border border-brand-border">
                     <h3 class="text-sm font-black text-white mb-1 flex items-center gap-2">
@@ -370,10 +335,7 @@
                         <span>QUALIFIED TEAMS FOR KNOCKOUT STAGE (TOP 2 PER GROUP)</span>
                     </h3>
                     <p class="text-xs text-gray-400 mb-4">Automatically updated based on final group stage points tables.</p>
-
-                    <div id="qualified-players-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-                        <!-- Qualified list -->
-                    </div>
+                    <div id="qualified-players-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5"></div>
                 </div>
             </div>
         </section>
@@ -381,29 +343,14 @@
         <!-- VIEW 5: KNOCKOUT STAGE SECTION -->
         <section id="view-knockout-stage" class="view-section hidden space-y-4">
             <div class="flex items-center gap-1.5 bg-brand-card p-2 rounded-xl border border-brand-border overflow-x-auto no-scrollbar whitespace-nowrap">
-                <button onclick="switchKnockoutRound('r32')" id="kround-btn-r32" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition shrink-0">
-                    Round of 32
-                </button>
-                <button onclick="switchKnockoutRound('r16')" id="kround-btn-r16" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
-                    Round of 16
-                </button>
-                <button onclick="switchKnockoutRound('r8')" id="kround-btn-r8" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
-                    Quarter Final
-                </button>
-                <button onclick="switchKnockoutRound('semi')" id="kround-btn-semi" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">
-                    Semi Final
-                </button>
-                <button onclick="switchKnockoutRound('final')" id="kround-btn-final" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-amber-400 font-bold transition shrink-0">
-                    <i class="fa-solid fa-trophy mr-1"></i> Final
-                </button>
-                <button onclick="switchKnockoutRound('champion')" id="kround-btn-champion" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-brand-green font-bold transition shrink-0">
-                    <i class="fa-solid fa-crown mr-1"></i> Champion
-                </button>
+                <button onclick="switchKnockoutRound('r32')" id="kround-btn-r32" class="subtab-btn active text-xs px-3 py-1.5 rounded-lg border border-brand-border transition shrink-0">Round of 32</button>
+                <button onclick="switchKnockoutRound('r16')" id="kround-btn-r16" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">Round of 16</button>
+                <button onclick="switchKnockoutRound('r8')" id="kround-btn-r8" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">Quarter Final</button>
+                <button onclick="switchKnockoutRound('semi')" id="kround-btn-semi" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-gray-300 transition shrink-0">Semi Final</button>
+                <button onclick="switchKnockoutRound('final')" id="kround-btn-final" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-amber-400 font-bold transition shrink-0"><i class="fa-solid fa-trophy mr-1"></i> Final</button>
+                <button onclick="switchKnockoutRound('champion')" id="kround-btn-champion" class="subtab-btn text-xs px-3 py-1.5 rounded-lg border border-brand-border text-brand-green font-bold transition shrink-0"><i class="fa-solid fa-crown mr-1"></i> Champion</button>
             </div>
-
-            <div id="knockout-matches-container" class="space-y-3">
-                <!-- Knockout matches rendered -->
-            </div>
+            <div id="knockout-matches-container" class="space-y-3"></div>
         </section>
 
         <!-- VIEW 6: RULES SECTION -->
@@ -416,7 +363,6 @@
                     </h2>
                     <p class="text-xs text-gray-400">Strict adherence to rules is required for all participating players.</p>
                 </div>
-
                 <div class="space-y-3 text-xs text-gray-300">
                     <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
                         <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-sliders mr-1"></i> 1. Match Settings</h3>
@@ -427,27 +373,6 @@
                             <li>Condition: Excellent / Normal</li>
                             <li>Injuries: OFF</li>
                         </ul>
-                    </div>
-
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
-                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-camera mr-1"></i> 2. Screenshot & Result Verification</h3>
-                        <p class="text-gray-400 leading-relaxed">
-                            Both players must take a full-screen screenshot showing the final scoreboard and match statistics. The winner must send the screenshot to the designated WhatsApp group or management line immediately after the match.
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
-                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-wifi mr-1"></i> 3. Network Disconnection Policy</h3>
-                        <p class="text-gray-400 leading-relaxed">
-                            If a disconnection occurs in the 1st half before 30 mins, restart the match and play the remaining time. If disconnected after 70 mins with a clear goal difference, management reserves the right to decide the final result.
-                        </p>
-                    </div>
-
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
-                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-handshake mr-1"></i> 4. Fair Play & Conduct</h3>
-                        <p class="text-gray-400 leading-relaxed">
-                            Abusive language, toxic behavior, or deliberate time-wasting back-passing will result in immediate disqualification without warning.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -475,15 +400,12 @@
                 </h3>
                 <button onclick="closeModal('management-login-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
             <form onsubmit="handleManagementLogin(event)" class="space-y-3">
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Enter Management PIN</label>
                     <input type="password" id="management-pin-input" required placeholder="Default PIN: 1234" class="w-full bg-slate-900 border border-brand-border focus:border-amber-400 text-white text-sm rounded-lg px-3 py-2 outline-none">
                 </div>
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-lg shadow-lg transition">
-                    VERIFY MANAGEMENT PIN
-                </button>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-lg shadow-lg transition">VERIFY MANAGEMENT PIN</button>
             </form>
         </div>
     </div>
@@ -491,7 +413,6 @@
     <!-- MODAL 2: SECRET ADMIN PANEL MODAL -->
     <div id="secret-admin-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3">
         <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-            <!-- Header -->
             <div class="p-4 border-b border-brand-border flex items-center justify-between bg-slate-900/50">
                 <h3 class="font-black text-white text-base flex items-center gap-2">
                     <i class="fa-solid fa-user-gear text-brand-purple"></i>
@@ -499,42 +420,30 @@
                 </h3>
                 <button onclick="closeModal('secret-admin-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <!-- Content Body -->
             <div class="p-4 space-y-4 overflow-y-auto custom-scrollbar flex-grow">
-                <!-- Quick Admin Control Actions -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <button onclick="seedDemo64Players()" class="bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan hover:bg-brand-cyan/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-bolt mr-1"></i> Seed 64 Demo Players
                     </button>
-
                     <button onclick="adminDrawGroups()" class="bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-dice mr-1"></i> Draw 16 Groups (A-P)
                     </button>
-
                     <button onclick="adminGenerateGroupFixtures()" class="bg-blue-500/10 border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-diagram-project mr-1"></i> Generate Group Fixtures
                     </button>
-
                     <button onclick="adminGenerateKnockouts()" class="bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-trophy mr-1"></i> Generate Knockout Bracket
                     </button>
-
                     <button onclick="resetTournamentData()" class="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-trash-can mr-1"></i> Reset Tournament
                     </button>
                 </div>
-
-                <!-- Pending Registrations Section -->
                 <div class="border border-brand-border rounded-xl p-3 bg-slate-900/50">
                     <h4 class="text-xs font-bold text-white mb-2 flex items-center justify-between">
                         <span><i class="fa-solid fa-clock text-amber-400 mr-1"></i> Pending Registrations</span>
                         <span id="admin-pending-count" class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full text-[10px]">0</span>
                     </h4>
-
-                    <div id="admin-pending-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
-                        <!-- Pending list items -->
-                    </div>
+                    <div id="admin-pending-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar"></div>
                 </div>
             </div>
         </div>
@@ -546,39 +455,31 @@
     <!-- MAIN JAVASCRIPT LOGIC -->
     <script>
         /* ==========================================================================
-           GLOBAL STATE & CONSTANTS
+           GLOBAL STATE & SUPABASE CONFIGURATION
            ========================================================================== */
         const STORAGE_KEY = 'EPR_TOURNAMENT_APP_STATE_V1';
         const DEFAULT_MANAGEMENT_PIN = '1234';
         const DEFAULT_ADMIN_PIN = 'admin123';
 
+        // ⭐ আপনার দেওয়া আসল Supabase URL ও Key যুক্ত করা হলো ⭐
+        const SUPABASE_URL = 'https://ssavsqhldfjddlafhusn.supabase.co'; 
+        const SUPABASE_KEY = 'sb_publishable_KTSCVzfy_EgbvAPCpkUj3g_mN3-Lrau';
+
         let appState = {
             isManagementLoggedIn: false,
-            supabaseUrl: 'https://ssavsqhldfjddlafhusn.supabase.co',
-            supabaseKey: 'sb_publishable_KTSCVzfy_EgbvAPCpkUj3g_mN3-Lrau',
-            players: [], // { id, name, gameUid, deviceName, fbPostLink, invitationLink, whatsapp, fbIdLink, status: 'pending'|'approved' }
-            groups: {}, // { 'A': [pId1, pId2, pId3, pId4], 'B': [...] }
-            groupFixtures: [], // { id, group, round, p1Id, p2Id, p1Score: null, p2Score: null, completed: false }
-            knockouts: {
-                r32: [],
-                r16: [],
-                r8: [],
-                semi: [],
-                final: [],
-                champion: null
-            }
+            players: [],
+            groups: {},
+            groupFixtures: [],
+            knockouts: { r32: [], r16: [], r8: [], semi: [], final: [], champion: null }
         };
 
         let supabaseClient = null;
 
-        /* ==========================================================================
-           INITIALIZATION & LIFECYCLE
-           ========================================================================== */
-        window.addEventListener('DOMContentLoaded', () => {
-            loadStateFromStorage();
+        window.addEventListener('DOMContentLoaded', async () => {
+            initSupabase();
+            await loadState();
             renderAllViews();
 
-            // Secret Admin Trigger listener (Double Click)
             const secretElem = document.getElementById('secret-admin-trigger');
             if (secretElem) {
                 secretElem.addEventListener('dblclick', () => {
@@ -592,43 +493,107 @@
             }
         });
 
-        function loadStateFromStorage() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    appState = { ...appState, ...parsed };
+        function initSupabase() {
+            if (SUPABASE_URL && SUPABASE_KEY && window.supabase) {
+                try {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    console.log("Supabase Client Initialized");
+                } catch (err) {
+                    console.error("Supabase init error:", err);
                 }
-            } catch (e) {
-                console.error("Failed to load local storage state:", e);
-            }
-        }
-
-        function saveStateToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-            } catch (e) {
-                console.error("Failed to save state:", e);
             }
         }
 
         /* ==========================================================================
-           VIEW & NAVIGATION MANAGEMENT (SPA SINGLE PAGE ARCHITECTURE)
+           HYBRID STORAGE LOGIC (SUPABASE CLOUD + LOCALSTORAGE FALLBACK)
+           ========================================================================== */
+        async function loadState() {
+            // ১. আগে লোকালস্টোরেজ লোড
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) appState = { ...appState, ...JSON.parse(saved) };
+            } catch (e) {}
+
+            // ২. Supabase কানেক্টেড থাকলে ক্লাউড থেকে ডাটা ফেচ
+            if (supabaseClient) {
+                try {
+                    // Fetch Players
+                    const { data: pData } = await supabaseClient.from('players').select('*');
+                    if (pData) {
+                        appState.players = pData.map(p => ({
+                            id: p.id,
+                            name: p.name,
+                            gameUid: p.game_uid,
+                            deviceName: p.device_name,
+                            fbPostLink: p.fb_post_link,
+                            invitationLink: p.invitation_link,
+                            whatsapp: p.whatsapp,
+                            fbIdLink: p.fb_id_link,
+                            status: p.status
+                        }));
+                    }
+
+                    // Fetch Group Fixtures
+                    const { data: fData } = await supabaseClient.from('group_fixtures').select('*').order('id', { ascending: true });
+                    if (fData) {
+                        appState.groupFixtures = fData.map(f => ({
+                            id: f.id,
+                            group: f.group_name,
+                            round: f.round,
+                            p1Id: f.p1_id,
+                            p2Id: f.p2_id,
+                            p1Score: f.p1_score,
+                            p2Score: f.p2_score,
+                            completed: f.completed
+                        }));
+                    }
+
+                    // Fetch Tournament State (Groups & Knockouts)
+                    const { data: sData } = await supabaseClient.from('tournament_state').select('*').eq('id', 1).single();
+                    if (sData) {
+                        if (sData.groups) appState.groups = sData.groups;
+                        if (sData.knockouts) appState.knockouts = sData.knockouts;
+                    }
+                } catch (e) {
+                    console.warn("Supabase fetch failed, using local storage fallback", e);
+                }
+            }
+        }
+
+        async function saveState() {
+            // ১. লোকালস্টোরেজে সেভ
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {}
+
+            // ২. Supabase-এ পুশ
+            if (supabaseClient) {
+                try {
+                    // Save State
+                    await supabaseClient.from('tournament_state').upsert({
+                        id: 1,
+                        groups: appState.groups,
+                        knockouts: appState.knockouts,
+                        updated_at: new Date()
+                    });
+                } catch (e) {
+                    console.error("Supabase state save error:", e);
+                }
+            }
+        }
+
+        /* ==========================================================================
+           VIEW & NAVIGATION MANAGEMENT
            ========================================================================== */
         function switchMainTab(tabId) {
-            // Hide all sections
             document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
-            
-            // Show target section
             const target = document.getElementById(`view-${tabId}`);
             if (target) target.classList.remove('hidden');
 
-            // Update main tab button states
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`tab-btn-${tabId}`);
             if (activeBtn) activeBtn.classList.add('active');
 
-            // Refresh view rendering
             if (tabId === 'players-list') renderPlayerList();
             if (tabId === 'group-stage') renderGroupStage();
             if (tabId === 'knockout-stage') renderKnockouts();
@@ -898,7 +863,7 @@
             });
         }
 
-        function submitMatchScore(fixtureId) {
+        async function submitMatchScore(fixtureId) {
             if (!appState.isManagementLoggedIn) {
                 showToast('Please login via EPR Management Login to save match scores!', 'error');
                 return;
@@ -917,7 +882,21 @@
                 fixture.p1Score = parseInt(p1Val, 10);
                 fixture.p2Score = parseInt(p2Val, 10);
                 fixture.completed = true;
-                saveStateToStorage();
+
+                if (supabaseClient) {
+                    await supabaseClient.from('group_fixtures').upsert({
+                        id: fixture.id,
+                        group_name: fixture.group,
+                        round: fixture.round,
+                        p1_id: fixture.p1Id,
+                        p2_id: fixture.p2Id,
+                        p1_score: fixture.p1Score,
+                        p2_score: fixture.p2Score,
+                        completed: true
+                    });
+                }
+
+                await saveState();
                 showToast(`Group ${fixture.group} Match #${fixtureId} result saved!`, 'success');
                 renderGroupPointsTables();
             }
@@ -1037,7 +1016,6 @@
             const array = Object.values(stats);
             array.forEach(item => { item.gd = item.gf - item.ga; });
 
-            // Sort by PTS -> GD -> GF -> Name
             array.sort((a, b) => {
                 if (b.pts !== a.pts) return b.pts - a.pts;
                 if (b.gd !== a.gd) return b.gd - a.gd;
@@ -1157,7 +1135,7 @@
             });
         }
 
-        function saveKnockoutScore(roundKey, matchId) {
+        async function saveKnockoutScore(roundKey, matchId) {
             if (!appState.isManagementLoggedIn) {
                 showToast('Login required to save knockout score', 'error');
                 return;
@@ -1183,10 +1161,9 @@
                 match.winnerId = s1 > s2 ? match.p1Id : match.p2Id;
                 match.completed = true;
 
-                // Auto-advance logic to next knockout round
                 advanceKnockoutWinner(roundKey, match);
 
-                saveStateToStorage();
+                await saveState();
                 showToast(`Match #${matchId} result saved! Winner advanced.`, 'success');
                 renderKnockoutRoundMatches(roundKey);
             }
@@ -1238,7 +1215,7 @@
         /* ==========================================================================
            FORM HANDLERS & MODAL CONTROL
            ========================================================================== */
-        function handleRegistrationSubmit(e) {
+        async function handleRegistrationSubmit(e) {
             e.preventDefault();
 
             const newPlayer = {
@@ -1254,7 +1231,26 @@
             };
 
             appState.players.push(newPlayer);
-            saveStateToStorage();
+
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('players').insert([{
+                        id: newPlayer.id,
+                        name: newPlayer.name,
+                        game_uid: newPlayer.gameUid,
+                        device_name: newPlayer.deviceName,
+                        fb_post_link: newPlayer.fbPostLink,
+                        invitation_link: newPlayer.invitationLink,
+                        whatsapp: newPlayer.whatsapp,
+                        fb_id_link: newPlayer.fbIdLink,
+                        status: 'pending'
+                    }]);
+                } catch (err) {
+                    console.error("Supabase player insert error:", err);
+                }
+            }
+
+            await saveState();
 
             document.getElementById('registration-form').reset();
             showToast('Registration submitted successfully! Pending EPR Management approval.', 'success');
@@ -1268,7 +1264,7 @@
 
             if (pin === DEFAULT_MANAGEMENT_PIN) {
                 appState.isManagementLoggedIn = true;
-                saveStateToStorage();
+                saveState();
                 closeModal('management-login-modal');
                 updateManagementBadges();
                 showToast('Logged in as EPR Management!', 'success');
@@ -1332,24 +1328,34 @@
             });
         }
 
-        function approvePlayer(pId) {
+        async function approvePlayer(pId) {
             const player = appState.players.find(p => p.id === pId);
             if (player) {
                 player.status = 'approved';
-                saveStateToStorage();
+
+                if (supabaseClient) {
+                    await supabaseClient.from('players').update({ status: 'approved' }).eq('id', pId);
+                }
+
+                await saveState();
                 renderAllViews();
                 showToast(`Approved ${player.name}`, 'success');
             }
         }
 
-        function rejectPlayer(pId) {
+        async function rejectPlayer(pId) {
             appState.players = appState.players.filter(p => p.id !== pId);
-            saveStateToStorage();
+
+            if (supabaseClient) {
+                await supabaseClient.from('players').delete().eq('id', pId);
+            }
+
+            await saveState();
             renderAllViews();
             showToast('Player rejected and removed.', 'info');
         }
 
-        function seedDemo64Players() {
+        async function seedDemo64Players() {
             const existingApproved = appState.players.filter(p => p.status === 'approved').length;
             const needed = 64 - existingApproved;
 
@@ -1358,9 +1364,11 @@
                 return;
             }
 
+            const newDemoPlayers = [];
+
             for (let i = 1; i <= needed; i++) {
                 const idNum = existingApproved + i;
-                appState.players.push({
+                const pObj = {
                     id: 'P_DEMO_' + idNum,
                     name: `Player_${idNum}`,
                     gameUid: `UID-${100000 + idNum}`,
@@ -1370,15 +1378,36 @@
                     whatsapp: '+8801700000000',
                     fbIdLink: 'https://facebook.com',
                     status: 'approved'
+                };
+                appState.players.push(pObj);
+
+                newDemoPlayers.push({
+                    id: pObj.id,
+                    name: pObj.name,
+                    game_uid: pObj.gameUid,
+                    device_name: pObj.deviceName,
+                    fb_post_link: pObj.fbPostLink,
+                    invitation_link: pObj.invitationLink,
+                    whatsapp: pObj.whatsapp,
+                    fb_id_link: pObj.fbIdLink,
+                    status: 'approved'
                 });
             }
 
-            saveStateToStorage();
+            if (supabaseClient && newDemoPlayers.length > 0) {
+                try {
+                    await supabaseClient.from('players').upsert(newDemoPlayers);
+                } catch (err) {
+                    console.error("Supabase seed error:", err);
+                }
+            }
+
+            await saveState();
             renderAllViews();
             showToast(`Seeded ${needed} demo players to reach 64 total!`, 'success');
         }
 
-        function adminDrawGroups() {
+        async function adminDrawGroups() {
             const approved = appState.players.filter(p => p.status === 'approved');
             if (approved.length < 64) {
                 if (!confirm(`Currently only ${approved.length} approved players exist. Do you still want to draw groups?`)) return;
@@ -1396,12 +1425,12 @@
                 appState.groups[gLetter].push(p.id);
             });
 
-            saveStateToStorage();
+            await saveState();
             renderAllViews();
             showToast('16 Groups (A-P) randomly drawn successfully!', 'success');
         }
 
-        function adminGenerateGroupFixtures() {
+        async function adminGenerateGroupFixtures() {
             if (Object.keys(appState.groups).length === 0) {
                 showToast('Draw groups first before generating fixtures!', 'error');
                 return;
@@ -1409,27 +1438,51 @@
 
             appState.groupFixtures = [];
             let fixId = 1;
+            const dbFixtures = [];
 
             Object.keys(appState.groups).forEach(gKey => {
                 const pIds = appState.groups[gKey];
                 if (pIds.length >= 2) {
-                    if (pIds[0] && pIds[1]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 1, p1Id: pIds[0], p2Id: pIds[1], p1Score: null, p2Score: null, completed: false });
-                    if (pIds[2] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 1, p1Id: pIds[2], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
+                    const addFix = (p1, p2, rnd) => {
+                        if (p1 && p2) {
+                            const item = { id: fixId++, group: gKey, round: rnd, p1Id: p1, p2Id: p2, p1Score: null, p2Score: null, completed: false };
+                            appState.groupFixtures.push(item);
+                            dbFixtures.push({
+                                id: item.id,
+                                group_name: item.group,
+                                round: item.round,
+                                p1_id: item.p1Id,
+                                p2_id: item.p2Id,
+                                p1_score: null,
+                                p2_score: null,
+                                completed: false
+                            });
+                        }
+                    };
 
-                    if (pIds[0] && pIds[2]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 2, p1Id: pIds[0], p2Id: pIds[2], p1Score: null, p2Score: null, completed: false });
-                    if (pIds[1] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 2, p1Id: pIds[1], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
-
-                    if (pIds[0] && pIds[3]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 3, p1Id: pIds[0], p2Id: pIds[3], p1Score: null, p2Score: null, completed: false });
-                    if (pIds[1] && pIds[2]) appState.groupFixtures.push({ id: fixId++, group: gKey, round: 3, p1Id: pIds[1], p2Id: pIds[2], p1Score: null, p2Score: null, completed: false });
+                    addFix(pIds[0], pIds[1], 1);
+                    addFix(pIds[2], pIds[3], 1);
+                    addFix(pIds[0], pIds[2], 2);
+                    addFix(pIds[1], pIds[3], 2);
+                    addFix(pIds[0], pIds[3], 3);
+                    addFix(pIds[1], pIds[2], 3);
                 }
             });
 
-            saveStateToStorage();
+            if (supabaseClient && dbFixtures.length > 0) {
+                try {
+                    await supabaseClient.from('group_fixtures').upsert(dbFixtures);
+                } catch (e) {
+                    console.error("Supabase fixtures save error:", e);
+                }
+            }
+
+            await saveState();
             renderAllViews();
             showToast('Group Stage Round-Robin fixtures generated!', 'success');
         }
 
-        function adminGenerateKnockouts() {
+        async function adminGenerateKnockouts() {
             const groupKeys = Object.keys(appState.groups).sort();
             if (groupKeys.length < 16) {
                 showToast('Requires 16 Groups (A-P) to generate Round of 32 World Cup knockout style pairings!', 'error');
@@ -1472,17 +1525,22 @@
             appState.knockouts.final = [];
             appState.knockouts.champion = null;
 
-            saveStateToStorage();
+            await saveState();
             renderKnockouts();
             showToast('Round of 32 Knockout bracket generated!', 'success');
         }
 
-        function resetTournamentData() {
+        async function resetTournamentData() {
             if (confirm('Are you sure you want to RESET all tournament fixtures, groups, and scores? Approved players will be kept.')) {
                 appState.groups = {};
                 appState.groupFixtures = [];
                 appState.knockouts = { r32: [], r16: [], r8: [], semi: [], final: [], champion: null };
-                saveStateToStorage();
+
+                if (supabaseClient) {
+                    await supabaseClient.from('group_fixtures').delete().neq('id', 0);
+                }
+
+                await saveState();
                 renderAllViews();
                 showToast('Tournament data reset complete.', 'info');
             }
