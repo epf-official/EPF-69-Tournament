@@ -425,6 +425,9 @@
                     <button onclick="seedDemo64Players()" class="bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan hover:bg-brand-cyan/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-bolt mr-1"></i> Seed 64 Demo Players
                     </button>
+                    <button onclick="copyAllEmails()" class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 font-bold text-xs p-2.5 rounded-xl transition flex items-center justify-center">
+                        <i class="fa-solid fa-copy mr-1"></i> Copy All Emails
+                    </button>
                     <button onclick="adminDrawGroups()" class="bg-purple-500/10 border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 font-bold text-xs p-2.5 rounded-xl transition">
                         <i class="fa-solid fa-dice mr-1"></i> Draw 16 Groups (A-P)
                     </button>
@@ -443,7 +446,7 @@
                         <span><i class="fa-solid fa-clock text-amber-400 mr-1"></i> Pending Registrations</span>
                         <span id="admin-pending-count" class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full text-[10px]">0</span>
                     </h4>
-                    <div id="admin-pending-list" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar"></div>
+                    <div id="admin-pending-list" class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar"></div>
                 </div>
             </div>
         </div>
@@ -687,11 +690,16 @@
                             <i class="fa-solid fa-gamepad mr-1 text-brand-cyan"></i>UID: ${escapeHtml(player.gameUid)}
                         </p>
                     </div>
-                    <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between text-[11px]">
-                        <a href="${escapeHtml(player.fbIdLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline flex items-center gap-1">
-                            <i class="fa-brands fa-facebook"></i> FB Profile
-                        </a>
-                        <span class="text-brand-green font-bold text-[10px]"><i class="fa-solid fa-circle-check mr-1"></i>Approved</span>
+                    <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between text-[11px] gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <a href="${escapeHtml(player.fbIdLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline flex items-center gap-1 font-semibold" title="Facebook Profile">
+                                <i class="fa-brands fa-facebook text-blue-400"></i> FB Profile
+                            </a>
+                            <a href="${escapeHtml(player.fbPostLink)}" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline flex items-center gap-1 font-semibold" title="Announcement Post Link">
+                                <i class="fa-solid fa-bullhorn text-amber-400"></i> Post Link
+                            </a>
+                        </div>
+                        <span class="text-brand-green font-bold text-[10px] shrink-0"><i class="fa-solid fa-circle-check mr-1"></i>Approved</span>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -1073,7 +1081,6 @@
             container.innerHTML = '';
 
             const matches = appState.knockouts[roundKey] || [];
-            const isLocked = !appState.isManagementLoggedIn;
 
             if (roundKey === 'champion') {
                 const champId = appState.knockouts.champion;
@@ -1105,29 +1112,44 @@
                 const p1 = appState.players.find(p => p.id === m.p1Id);
                 const p2 = appState.players.find(p => p.id === m.p2Id);
 
+                // Check if players have qualified for this matchup
+                const isPlayersQualified = (p1 && p2);
+                // Locked if management not logged in OR if players haven't qualified yet
+                const isMatchInputDisabled = !appState.isManagementLoggedIn || !isPlayersQualified;
+
                 const card = document.createElement('div');
-                card.className = "bg-brand-card border border-brand-border rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3";
+                card.className = "bg-brand-card border border-brand-border rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md";
+                
+                const p1DisplayName = p1 ? escapeHtml(p1.name) : `<span class="text-amber-400 font-mono font-bold">${m.p1Placeholder || 'TBD'}</span>`;
+                const p2DisplayName = p2 ? escapeHtml(p2.name) : `<span class="text-amber-400 font-mono font-bold">${m.p2Placeholder || 'TBD'}</span>`;
+
+                const statusBadge = isPlayersQualified ? 
+                    (m.completed ? '<span class="text-[10px] text-brand-green bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>Finished</span>' 
+                                 : '<span class="text-[10px] text-brand-cyan bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 font-bold">Ready</span>') :
+                    '<span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-bold"><i class="fa-solid fa-lock mr-1"></i>Locked (Awaiting Qualifiers)</span>';
+
                 card.innerHTML = `
-                    <div class="text-xs">
+                    <div class="flex items-center gap-2 text-xs">
                         <span class="bg-amber-500/10 text-amber-400 font-bold px-2 py-0.5 rounded border border-amber-500/20 text-[10px]">
                             Match #${m.id}
                         </span>
+                        ${statusBadge}
                     </div>
 
                     <div class="flex items-center justify-center gap-3 font-bold text-xs sm:text-sm text-white">
-                        <span class="truncate max-w-[120px] text-right">${p1 ? escapeHtml(p1.name) : (m.p1Placeholder || 'TBD')}</span>
+                        <span class="truncate max-w-[120px] text-right">${p1DisplayName}</span>
                         
                         <div class="flex items-center gap-1">
-                            <input type="number" id="kscore-p1-${roundKey}-${m.id}" value="${m.p1Score !== null ? m.p1Score : ''}" ${isLocked ? 'disabled' : ''} placeholder="0" class="w-10 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1 rounded outline-none disabled:opacity-50">
+                            <input type="number" id="kscore-p1-${roundKey}-${m.id}" value="${m.p1Score !== null ? m.p1Score : ''}" ${isMatchInputDisabled ? 'disabled' : ''} placeholder="0" class="w-10 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1 rounded outline-none disabled:opacity-50">
                             <span class="text-gray-500 font-bold text-xs">-</span>
-                            <input type="number" id="kscore-p2-${roundKey}-${m.id}" value="${m.p2Score !== null ? m.p2Score : ''}" ${isLocked ? 'disabled' : ''} placeholder="0" class="w-10 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1 rounded outline-none disabled:opacity-50">
+                            <input type="number" id="kscore-p2-${roundKey}-${m.id}" value="${m.p2Score !== null ? m.p2Score : ''}" ${isMatchInputDisabled ? 'disabled' : ''} placeholder="0" class="w-10 bg-slate-900 border border-brand-border text-center text-xs font-bold text-brand-cyan py-1 rounded outline-none disabled:opacity-50">
                         </div>
 
-                        <span class="truncate max-w-[120px] text-left">${p2 ? escapeHtml(p2.name) : (m.p2Placeholder || 'TBD')}</span>
+                        <span class="truncate max-w-[120px] text-left">${p2DisplayName}</span>
                     </div>
 
-                    <button onclick="saveKnockoutScore('${roundKey}', ${m.id})" ${isLocked ? 'disabled' : ''} class="bg-brand-cyan hover:bg-cyan-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded transition disabled:opacity-40">
-                        Save Winner
+                    <button onclick="saveKnockoutScore('${roundKey}', ${m.id})" ${isMatchInputDisabled ? 'disabled' : ''} class="bg-brand-cyan hover:bg-cyan-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded transition disabled:opacity-40 flex items-center gap-1">
+                        ${isPlayersQualified ? 'Save Winner' : '<i class="fa-solid fa-lock"></i> Locked'}
                     </button>
                 `;
                 container.appendChild(card);
@@ -1137,6 +1159,14 @@
         async function saveKnockoutScore(roundKey, matchId) {
             if (!appState.isManagementLoggedIn) {
                 showToast('Login required to save knockout score', 'error');
+                return;
+            }
+
+            const match = appState.knockouts[roundKey].find(m => m.id === matchId);
+            if (!match) return;
+
+            if (!match.p1Id || !match.p2Id) {
+                showToast('Players have not qualified for this match yet! Scores are locked.', 'error');
                 return;
             }
 
@@ -1153,19 +1183,16 @@
                 return;
             }
 
-            const match = appState.knockouts[roundKey].find(m => m.id === matchId);
-            if (match) {
-                match.p1Score = s1;
-                match.p2Score = s2;
-                match.winnerId = s1 > s2 ? match.p1Id : match.p2Id;
-                match.completed = true;
+            match.p1Score = s1;
+            match.p2Score = s2;
+            match.winnerId = s1 > s2 ? match.p1Id : match.p2Id;
+            match.completed = true;
 
-                advanceKnockoutWinner(roundKey, match);
+            advanceKnockoutWinner(roundKey, match);
 
-                await saveState();
-                showToast(`Match #${matchId} result saved! Winner advanced.`, 'success');
-                renderKnockoutRoundMatches(roundKey);
-            }
+            await saveState();
+            showToast(`Match #${matchId} result saved! Winner advanced.`, 'success');
+            renderKnockoutRoundMatches(roundKey);
         }
 
         function advanceKnockoutWinner(currentRound, match) {
@@ -1291,6 +1318,40 @@
         /* ==========================================================================
            SECRET ADMIN PANEL FUNCTIONS
            ========================================================================== */
+        function copyAllEmails() {
+            const approved = appState.players.filter(p => p.status === 'approved');
+            if (approved.length === 0) {
+                showToast('No approved player emails found!', 'error');
+                return;
+            }
+            const emails = approved.map(p => p.invitationLink).filter(e => e).join(', ');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(emails).then(() => {
+                    showToast(`Copied ${approved.length} player emails!`, 'success');
+                }).catch(() => fallbackCopyEmails(emails, approved.length));
+            } else {
+                fallbackCopyEmails(emails, approved.length);
+            }
+        }
+
+        function fallbackCopyEmails(text, count) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(`Copied ${count} player emails!`, 'success');
+            } catch (err) {
+                showToast('Failed to copy emails', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+
         function renderAdminPendingList() {
             const container = document.getElementById('admin-pending-list');
             const countBadge = document.getElementById('admin-pending-count');
@@ -1308,18 +1369,33 @@
 
             pending.forEach(p => {
                 const item = document.createElement('div');
-                item.className = "bg-slate-900 p-2.5 rounded-lg border border-brand-border flex items-center justify-between text-xs";
+                item.className = "bg-slate-900 p-3 rounded-lg border border-brand-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs";
                 item.innerHTML = `
-                    <div>
-                        <div class="font-bold text-white">${escapeHtml(p.name)}</div>
-                        <div class="text-[10px] text-gray-400">UID: ${escapeHtml(p.gameUid)} | ${escapeHtml(p.deviceName)}</div>
+                    <div class="space-y-1 w-full sm:w-auto">
+                        <div class="font-bold text-white text-sm flex items-center gap-2">
+                            <span>${escapeHtml(p.name)}</span>
+                            <span class="text-[10px] text-gray-400 font-mono bg-slate-800 px-1.5 py-0.5 rounded">UID: ${escapeHtml(p.gameUid)}</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400 flex flex-wrap items-center gap-x-3 gap-y-1">
+                            <span><i class="fa-solid fa-mobile-screen mr-1 text-brand-purple"></i>${escapeHtml(p.deviceName)}</span>
+                            <span><i class="fa-solid fa-envelope mr-1 text-brand-cyan"></i>${escapeHtml(p.invitationLink)}</span>
+                            <span><i class="fa-brands fa-whatsapp mr-1 text-green-400"></i>${escapeHtml(p.whatsapp)}</span>
+                        </div>
+                        <div class="flex items-center gap-3 pt-1 text-[11px]">
+                            <a href="${escapeHtml(p.fbIdLink)}" target="_blank" rel="noopener noreferrer" class="text-brand-cyan hover:underline flex items-center gap-1 font-medium">
+                                <i class="fa-brands fa-facebook"></i> FB Profile
+                            </a>
+                            <a href="${escapeHtml(p.fbPostLink)}" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:underline flex items-center gap-1 font-medium">
+                                <i class="fa-solid fa-bullhorn"></i> Announcement Post Link
+                            </a>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-1.5">
-                        <button onclick="approvePlayer('${p.id}')" class="bg-brand-green hover:bg-emerald-400 text-slate-950 font-black text-[10px] px-2.5 py-1 rounded">
-                            Approve
+                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                        <button onclick="approvePlayer('${p.id}')" class="bg-brand-green hover:bg-emerald-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded shadow transition">
+                            <i class="fa-solid fa-check mr-1"></i> Approve
                         </button>
-                        <button onclick="rejectPlayer('${p.id}')" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 font-bold text-[10px] px-2 py-1 rounded border border-red-500/30">
-                            Reject
+                        <button onclick="rejectPlayer('${p.id}')" class="bg-red-500/20 hover:bg-red-500/30 text-red-400 font-bold text-xs px-2.5 py-1.5 rounded border border-red-500/30 transition">
+                            <i class="fa-solid fa-xmark mr-1"></i> Reject
                         </button>
                     </div>
                 `;
