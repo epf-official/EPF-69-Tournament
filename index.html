@@ -68,6 +68,21 @@
             color: #080c14;
             font-weight: 700;
         }
+
+        /* Red Pulsing Animation for Matchday Group Button */
+        @keyframes pulse-red-glow {
+            0%, 100% {
+                box-shadow: 0 0 12px rgba(239, 68, 68, 0.7), 0 0 25px rgba(239, 68, 68, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 22px rgba(239, 68, 68, 1), 0 0 40px rgba(239, 68, 68, 0.8);
+                transform: scale(1.02);
+            }
+        }
+        .animate-pulse-red {
+            animation: pulse-red-glow 1.8s infinite ease-in-out;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between custom-scrollbar">
@@ -160,16 +175,31 @@
                     Welcome to the ultimate eFootball battleground organized by EPF Management. Compete across 16 groups, advance through knockouts, and claim glory.
                 </p>
 
-                <div class="flex flex-wrap items-center justify-center gap-3">
-                    <button onclick="switchMainTab('registration')" class="bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-sm px-6 py-2.5 rounded-xl shadow-lg glow-cyan transition transform active:scale-95">
-                        <i class="fa-solid fa-pen-to-square mr-2"></i> TOURNAMENT REGISTRATION
-                    </button>
-                    <button onclick="switchMainTab('group-stage')" class="bg-brand-card hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl border border-brand-border transition">
-                        <i class="fa-solid fa-sitemap mr-2 text-brand-cyan"></i> Group Stage
-                    </button>
-                    <button onclick="switchMainTab('knockout-stage')" class="bg-brand-card hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl border border-brand-border transition">
-                        <i class="fa-solid fa-trophy mr-2 text-amber-400"></i> Knockouts
-                    </button>
+                <!-- BUTTONS CONTAINER -->
+                <div class="space-y-3">
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <button onclick="switchMainTab('registration')" class="bg-gradient-to-r from-brand-cyan to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-sm px-6 py-2.5 rounded-xl shadow-lg glow-cyan transition transform active:scale-95">
+                            <i class="fa-solid fa-pen-to-square mr-2"></i> TOURNAMENT REGISTRATION
+                        </button>
+                        <button onclick="switchMainTab('group-stage')" class="bg-brand-card hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl border border-brand-border transition">
+                            <i class="fa-solid fa-sitemap mr-2 text-brand-cyan"></i> Group Stage
+                        </button>
+                        <button onclick="switchMainTab('knockout-stage')" class="bg-brand-card hover:bg-slate-800 text-white font-bold text-sm px-5 py-2.5 rounded-xl border border-brand-border transition">
+                            <i class="fa-solid fa-trophy mr-2 text-amber-400"></i> Knockouts
+                        </button>
+                    </div>
+
+                    <!-- RED PULSING BUTTON DIRECTLY BELOW TOURNAMENT REGISTRATION -->
+                    <div class="flex justify-center pt-1">
+                        <button onclick="openModal('matchday-group-modal')" class="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs sm:text-sm px-6 py-3 rounded-xl border border-red-400/50 shadow-2xl animate-pulse-red transition transform active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-facebook-messenger text-base animate-bounce"></i>
+                            <span>JOIN MATCHDAY GROUP</span>
+                            <span class="relative flex h-2.5 w-2.5 ml-1">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-200 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -353,27 +383,97 @@
             <div id="knockout-matches-container" class="space-y-3"></div>
         </section>
 
-        <!-- VIEW 6: RULES SECTION -->
-        <section id="view-rules" class="view-section hidden max-w-3xl mx-auto space-y-4">
-            <div class="bg-brand-card border border-brand-border rounded-2xl p-5 shadow-xl space-y-4">
+        <!-- VIEW 6: RULES SECTION (EPF OFFICIAL RULEBOOK) -->
+        <section id="view-rules" class="view-section hidden max-w-4xl mx-auto space-y-4">
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-5 shadow-xl space-y-5">
                 <div class="border-b border-brand-border pb-3">
-                    <h2 class="text-xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-book-bookmark text-brand-cyan"></i>
-                        <span>ELITE PLAYMAKERS FC - TOURNAMENT RULES</span>
-                    </h2>
-                    <p class="text-xs text-gray-400">Strict adherence to rules is required for all participating players.</p>
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i>
+                            <span>EPF MANAGEMENT COMMUNITY - অফিশিয়াল টুর্নামেন্ট রুলসবুক</span>
+                        </h2>
+                    </div>
+                    <p class="text-xs text-brand-cyan mt-1 font-semibold">🏆 সকল প্লেয়ারদের জন্য এই নিয়মাবলি কঠোরভাবে অনুসরণ করা বাধ্যতামূলক।</p>
                 </div>
-                <div class="space-y-3 text-xs text-gray-300">
-                    <div class="bg-slate-900/80 p-3 rounded-xl border border-brand-border">
-                        <h3 class="font-bold text-brand-cyan mb-1"><i class="fa-solid fa-sliders mr-1"></i> 1. Match Settings</h3>
-                        <ul class="list-disc list-inside space-y-1 text-gray-400">
-                            <li>Match Duration: <strong>8 Minutes</strong></li>
-                            <li>Extra Time: <strong>OFF</strong> (Group Stage) / <strong>ON</strong> (Knockout Stage)</li>
-                            <li>Penalties: <strong>OFF</strong> (Group Stage) / <strong>ON</strong> (Knockout Stage)</li>
-                            <li>Condition: Excellent / Normal</li>
-                            <li>Injuries: OFF</li>
+
+                <div class="space-y-4 text-xs text-gray-300">
+                    
+                    <!-- CATEGORY 1: Match Settings -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-brand-border space-y-3">
+                        <h3 class="font-black text-brand-cyan text-sm flex items-center gap-2 border-b border-brand-border/60 pb-2">
+                            <i class="fa-solid fa-sliders text-brand-cyan"></i> ১. ম্যাচ রুম ও কনফিগারেশন সংক্রান্ত নিয়মাবলী
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-brand-card/60 p-2.5 rounded-lg border border-brand-border/40 text-[11px] font-mono">
+                            <div><strong>Match Type:</strong> Standard</div>
+                            <div><strong>Match Time:</strong> 8 Minutes</div>
+                            <div><strong>Injuries:</strong> ON</div>
+                            <div><strong>Extra Time & PK:</strong> OFF (সুপার ম্যাচে ON)</div>
+                            <div><strong>Sub Intervals:</strong> 3</div>
+                            <div><strong>Substitutes:</strong> 5</div>
+                            <div><strong>Home Condition:</strong> Normal</div>
+                            <div><strong>Away Condition:</strong> Normal</div>
+                        </div>
+                        <ul class="list-disc list-inside space-y-1.5 text-gray-300 pl-1 leading-relaxed">
+                            <li><strong>VPN নিয়ম:</strong> যে প্লেয়ার VPN/DPN ব্যবহার করবেন, তার স্পষ্ট সিদ্ধান্তে/নির্দেশে ম্যাচ রুম ক্রিয়েট করতে হবে।</li>
+                            <li><strong>রুম সেটিংস অভিযোগ:</strong> ম্যাচ চলাকালীন বা শেষ হওয়ার পর রুম সেটিংস সংক্রান্ত কোনো অভিযোগ গ্রহণযোগ্য নয়।</li>
+                            <li><strong>ফর্ম জালিয়াতি:</strong> তবে উদ্দেশ্যপ্রণোদিতভাবে নিজের প্লেয়ার ফর্ম ভালো রেখে প্রতিপক্ষের ফর্ম খারাপ দিলে উপযুক্ত প্রমাণ সাপেক্ষে অভিযুক্ত প্লেয়ার সরাসরি <strong>অটো লস (Auto Loss)</strong> পাবে।</li>
                         </ul>
                     </div>
+
+                    <!-- CATEGORY 2: Network, Lag & Disconnection -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-brand-border space-y-3">
+                        <h3 class="font-black text-rose-400 text-sm flex items-center gap-2 border-b border-brand-border/60 pb-2">
+                            <i class="fa-solid fa-wifi text-rose-400"></i> ২. নেটওয়ার্ক ল্যাগ, স্লো ও ডিসকানেক্ট সংক্রান্ত নিয়মাবলী
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300 pl-1 leading-relaxed">
+                            <li><strong>ল্যাগ/স্লো প্রুফ:</strong> ম্যাচে ল্যাগ বা স্লো অনুভূত হলে সাথে সাথে স্ক্রিন রেকর্ড চালু করে স্পষ্ট প্রমাণ রেখে গেম পজ (Pause) করে ডিসকানেক্ট করতে হবে। প্রমাণ ছাড়া অন্য কোনো উদ্দেশ্যে ছেড়ে দিলে ইয়েলো কার্ড পাবেন।</li>
+                            <li><strong>রি-ম্যাচের সময় হিসাব:</strong> মোট ৯৩ মিনিট (বা ৯০ মিনিট) থেকে অতিক্রান্ত সময় বিয়োগ করে বাকি মিনিটটুকু নতুন ম্যাচের প্রথম থেকে খেলতে হবে (যেমন: ৯০ - সম্পন্ন মিনিট = বাকি সময়)। রি-ম্যাচের পূর্বে স্কোয়াড, ফরমেশন বা ম্যানেজার পরিবর্তন করার সুযোগ থাকবে।</li>
+                            <li><strong>ডিসকানেক্ট রুম ক্রিয়েটর:</strong> গেমে যার পক্ষে 'Win' দেখাবে, রি-ম্যাচে সে রুম তৈরি করবে। বারবার ডিসকানেক্টের জন্য রি-ম্যাচ শুরুর আগেই অতিরিক্ত কার্ড ইস্যু করা যাবে।</li>
+                            <li><strong>গোল কাউন্ট নিয়ম:</strong> স্কোরবোর্ডে ওঠা গোল বা বল গোলবারের ভেতরে থাকার স্পষ্ট স্ক্রিনশট/ভিডিও থাকলে তা গোল হিসেবে কাউন্ট হবে। ডিসকানেক্ট হওয়ার পরও কিছুক্ষণ গেম চললে এবং প্রমাণ থাকলে সেই গোলও কাউন্ট করা হবে। তবে রি-ম্যাচের নির্ধারিত সময়ের ১ সেকেন্ড পরবর্তী গোল ধরা হবে না।</li>
+                            <li><strong>১v১ ও গোলপোস্টের পজিশন:</strong> ১v১ পজিশন, গোলপোস্টের সামনে ফাঁকা জায়গা বা শট নেওয়ার মুহূর্তে ডিসকানেক্ট হলে গোলের সিদ্ধান্ত সম্পূর্ণভাবে EPF Admin Panel গ্রহণ করবে। 'সেভ করতে পারতো' বা 'বার ছাড়াই যেতো' এসব যুক্তি চলবে না (তবে Unfinished আসলে ছাড় পাবে)।</li>
+                            <li><strong>সময় অপচয়/ব্যাকপাস:</strong> সময় অপচয়ের জন্য ব্যাকপাস সম্পূর্ণ নিষিদ্ধ। ভিডিওতে ব্যাকপাস প্রমাণিত হলে অপচয়কৃত সময়ের ৩ গুণ সময় অতিরিক্ত রি-ম্যাচে যোগ হবে এবং অভিযুক্ত প্লেয়ার ইয়েলো কার্ড (Yellow Card) পাবেন।</li>
+                            <li><strong>১৫ মিনিটের রুল:</strong> ম্যাচ ডিসকানেক্ট হলে ভিডিও সমাধানসহ সর্বোচ্চ ১৫ মিনিটের মধ্যে রি-ম্যাচ শুরু করতে হবে। 'Win' পাওয়া প্লেয়ার চাইলে ডেডলাইনের মধ্যে রি-ম্যাচ টাইম স্থির করতে পারবে। সময় নির্ধারণ না করে ১৫ মিনিটের মধ্যে খেলায় ব্যর্থ হলে অটো লস খাবে।</li>
+                            <li><strong>ইন-গেম রেড কার্ড প্রভাব:</strong> ডিসকানেক্টেড ম্যাচে 'Win' দেখালে রি-ম্যাচে কার্ডের প্রভাব থাকবে না। তবে 'Win' ছাড়া অন্য রেজাল্ট আসলে প্রতিপক্ষ ১টি বোনাস গোল পাবে।</li>
+                            <li><strong>খেলতে অস্বীকারের শাস্তি:</strong> অবশিষ্ট সময় খেলতে অপোনেন্ট অস্বীকার বা ব্যর্থ হলে রেশিও অনুপাতে গোল যোগ হবে (সর্বোচ্চ ১০ গোল)। যেমন: ৬০ মিনিটে ৪-১ থাকলে ৬-১ এবং ৩০ মিনিটে ১-০ থাকলে ৩-০ ধরা হবে।</li>
+                        </ul>
+                    </div>
+
+                    <!-- CATEGORY 3: Video Proof & Recording -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-brand-border space-y-3">
+                        <h3 class="font-black text-brand-purple text-sm flex items-center gap-2 border-b border-brand-border/60 pb-2">
+                            <i class="fa-solid fa-video text-brand-purple"></i> ৩. স্ক্রিনরেকর্ড ও ভিডিও প্রুফ জমা দেওয়ার নিয়ম
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300 pl-1 leading-relaxed">
+                            <li><strong>রেকর্ডের বাধ্যবাধকতা:</strong> জয়লাভ করলে, ড্র হলে বা এগিয়ে থাকা অবস্থায় ডিসকানেক্ট হলে স্ক্রিনরেকর্ড প্রুফ দেওয়া বাধ্যতামূলক।</li>
+                            <li><strong>জমা দেওয়ার সময়:</strong> ম্যাচ শেষ হওয়ার সর্বোচ্চ ১০ মিনিটের মধ্যে স্ক্রিনরেকর্ড প্রুফ ম্যাচডে গ্রুপে পাঠাতে হবে।</li>
+                            <li><strong>যা যা দেখানো বাধ্যতামূলক:</strong>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 my-2 pl-4 text-amber-300 font-medium">
+                                    <div>• রুম আইডি (Room ID)</div>
+                                    <div>• ম্যাচ শেষের রেজাল্ট পেজ (Result Page)</div>
+                                    <div>• গেম সেটিংসের Smart Assist অবস্থা (On/Off)</div>
+                                    <div>• নিজের Konami User ID</div>
+                                    <div class="col-span-full">• Phone Settings > About Phone থেকে ফোনের ডিভাইস মডেল</div>
+                                </div>
+                            </li>
+                            <li><strong>ভিডিও কাটিং/পজ নিষিদ্ধ:</strong> স্ক্রিনরেকর্ড কোনো পজ (Pause) বা এডিট করা থাকলে অটো লস এবং ক্ষেত্রবিশেষে ৭ দিন থেকে স্থায়ী ব্যান দেওয়া হতে পারে।</li>
+                        </ul>
+                    </div>
+
+                    <!-- CATEGORY 4: Auto Result, Misconduct & Punishment -->
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-brand-border space-y-3">
+                        <h3 class="font-black text-amber-400 text-sm flex items-center gap-2 border-b border-brand-border/60 pb-2">
+                            <i class="fa-solid fa-gavel text-amber-400"></i> ৪. অটো রেজাল্ট, অনুপস্থিতি, শাস্তি ও রুম ক্রিয়েট নিয়ম
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300 pl-1 leading-relaxed">
+                            <li><strong>পারস্পরিক সম্মতি:</strong> ডেডলাইনের পূর্বে উভয় প্লেয়ার পারস্পরিক সম্মতিতে যেকোনো সময় ম্যাচ শেষ করতে পারবেন।</li>
+                            <li><strong>রেসপন্স টাইম নিয়ম:</strong> নির্ধারিত সময়ে ম্যাচডে গ্রুপে সঠিকভাবে রেসপন্স (মেনশন বা রিপ্লাই) করতে হবে। "@oppo" বা "oppo vai achen?" টাইপ করা আনঅফিশিয়াল মেসেজ রেসপন্স হিসেবে গণ্য হবে না।</li>
+                            <li><strong>অনুপস্থিতির শাস্তি:</strong> উভয় প্লেয়ার রেসপন্স করলে এক্টিভিটি টাইমে গেম খেলতে বাধ্য থাকবেন। একজন অনুপস্থিত থাকলে অটো লস (Auto Win/Auto Loss), দুজনই অনুপস্থিত থাকলে অটো ড্র (Auto Draw) হবে।</li>
+                            <li><strong>রুম ক্রিয়েট ও ৫ মিনিটের নিয়ম:</strong> ফিক্সচারে উল্লেখিত ভিপিএন প্লেয়ার রুম ক্রিয়েট করবেন বা নন-ভিপিএন প্লেয়ারকে রুম ক্রিয়েটের অনুরোধ করবেন। কোনোটি না করলে ভিপিএন প্লেয়ার অটো লস পাবেন। নন-ভিপিএন প্লেয়ারকে জানানোর ৫ মিনিটের মধ্যে রুম ক্রিয়েট করতে হবে। কোড পাওয়ার পর ৫ মিনিটের মধ্যে রুমে না ঢুকলে অটো লস হবে।</li>
+                            <li><strong>স্মার্ট এসিস্ট ও খারাপ আচরণ:</strong> যেকোনো প্রকার অসদাচরণ, ফেক প্রুফ জমা, কিংবা স্মার্ট এসিস্ট নিষিদ্ধ ম্যাচে অন রাখার জন্য সরাসরি অটো লস ও রেড কার্ড (Red Card / Ban) প্রদান করা হবে।</li>
+                            <li><strong>এডমিন প্যানেলের সিদ্ধান্ত:</strong> বিশেষ পরিস্থিতিতে অভিযোগ বক্সে EPF Admin Panel নিজস্ব বিবেচনা অনুযায়ী যেকোনো নীতিগত চূড়ান্ত সিদ্ধান্ত প্রদান করতে পারবে।</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -403,7 +503,7 @@
             <form onsubmit="handleManagementLogin(event)" class="space-y-3">
                 <div>
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Enter Management PIN</label>
-                    <input type="password" id="management-pin-input" required placeholder="Default PIN: 1234" class="w-full bg-slate-900 border border-brand-border focus:border-amber-400 text-white text-sm rounded-lg px-3 py-2 outline-none">
+                    <input type="password" id="management-pin-input" required placeholder="Default PIN: epfhadivhai" class="w-full bg-slate-900 border border-brand-border focus:border-amber-400 text-white text-sm rounded-lg px-3 py-2 outline-none">
                 </div>
                 <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-lg shadow-lg transition">VERIFY MANAGEMENT PIN</button>
             </form>
@@ -448,6 +548,103 @@
                     </h4>
                     <div id="admin-pending-list" class="space-y-2 max-h-56 overflow-y-auto custom-scrollbar"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: MATCHDAY GROUP POPUP MODAL -->
+    <div id="matchday-group-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3">
+        <div class="bg-brand-card border border-brand-border rounded-2xl w-full max-w-lg p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-brand-border pb-3">
+                <h3 class="font-black text-white text-base flex items-center gap-2">
+                    <i class="fa-brands fa-facebook-messenger text-rose-500 text-xl"></i>
+                    <span>JOIN MATCHDAY GROUPS</span>
+                </h3>
+                <button onclick="closeModal('matchday-group-modal')" class="text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-300">
+                আপনার গ্রুপ অনুযায়ী নির্ধারিত মেসেঞ্জার ম্যাচডে গ্রুপে যুক্ত হতে নিচের বাটনে ক্লিক করুন অথবা লিংক কপি করুন:
+            </p>
+
+            <!-- MATCHDAY GROUPS OPTIONS -->
+            <div class="space-y-3">
+
+                <!-- OPTION 1: Group A - E -->
+                <div class="bg-slate-900/90 border border-brand-border rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-brand-cyan uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-users text-brand-cyan"></i> Matchday Group 1 (Group A - E)
+                        </span>
+                        <span class="text-[10px] bg-brand-cyan/10 text-brand-cyan px-2 py-0.5 rounded font-bold border border-brand-cyan/20">Active</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400">গ্রুপ A, B, C, D এবং E এর প্লেয়ারদের জন্য অফিসিয়াল মেসেঞ্জার গ্রুপ।</p>
+                    <div class="flex items-center gap-2 pt-1">
+                        <!-- https://m.me/j/BRLhFHBE8KuMpClU/?send_source=gc%3Acopy_invite_link_t -->
+                        <a href="https://m.me/j/a-e-group-placeholder/" target="_blank" rel="noopener noreferrer" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs py-2 px-3 rounded-lg text-center transition flex items-center justify-center gap-1.5 shadow">
+                            <i class="fa-brands fa-facebook-messenger"></i> Join Group
+                        </a>
+                        <button onclick="copyGroupLink('https://m.me/j/a-e-group-placeholder/')" class="bg-slate-800 hover:bg-slate-700 text-brand-cyan border border-brand-cyan/30 font-bold text-xs py-2 px-3 rounded-lg transition flex items-center gap-1 shrink-0">
+                            <i class="fa-solid fa-copy"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- OPTION 2: Group F - J -->
+                <div class="bg-slate-900/90 border border-brand-border rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-brand-purple uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-users text-brand-purple"></i> Matchday Group 2 (Group F - J)
+                        </span>
+                        <span class="text-[10px] bg-brand-purple/10 text-brand-purple px-2 py-0.5 rounded font-bold border border-brand-purple/20">Active</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400">গ্রুপ F, G, H, I এবং J এর প্লেয়ারদের জন্য অফিসিয়াল মেসেঞ্জার গ্রুপ।</p>
+                    <div class="flex items-center gap-2 pt-1">
+                        <!-- https://m.me/j/U-q-0ummn36HaUxP/?send_source=gc%3Acopy_invite_link_t -->
+                        <a href="https://m.me/j/f-j-group-placeholder/" target="_blank" rel="noopener noreferrer" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold text-xs py-2 px-3 rounded-lg text-center transition flex items-center justify-center gap-1.5 shadow">
+                            <i class="fa-brands fa-facebook-messenger"></i> Join Group
+                        </a>
+                        <button onclick="copyGroupLink('https://m.me/j/f-j-group-placeholder/')" class="bg-slate-800 hover:bg-slate-700 text-brand-purple border border-brand-purple/30 font-bold text-xs py-2 px-3 rounded-lg transition flex items-center gap-1 shrink-0">
+                            <i class="fa-solid fa-copy"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- OPTION 3: Group K - P -->
+                <div class="bg-slate-900/90 border border-brand-border rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-brand-green uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-users text-brand-green"></i> Matchday Group 3 (Group K - P)
+                        </span>
+                        <span class="text-[10px] bg-brand-green/10 text-brand-green px-2 py-0.5 rounded font-bold border border-brand-green/20">Active</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400">গ্রুপ K, L, M, N, O এবং P এর প্লেয়ারদের জন্য অফিসিয়াল মেসেঞ্জার গ্রুপ।</p>
+                    <div class="flex items-center gap-2 pt-1">
+                        <!-- https://m.me/j/qFtnTfC5kta77XWc/?send_source=gc%3Acopy_invite_link_t-->
+                        <a href="https://m.me/j/k-p-group-placeholder/" target="_blank" rel="noopener noreferrer" class="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs py-2 px-3 rounded-lg text-center transition flex items-center justify-center gap-1.5 shadow">
+                            <i class="fa-brands fa-facebook-messenger"></i> Join Group
+                        </a>
+                        <button onclick="copyGroupLink('https://m.me/j/k-p-group-placeholder/')" class="bg-slate-800 hover:bg-slate-700 text-brand-green border border-brand-green/30 font-bold text-xs py-2 px-3 rounded-lg transition flex items-center gap-1 shrink-0">
+                            <i class="fa-solid fa-copy"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- OPTION 4: Knockout Stage Group -->
+                <div class="bg-slate-900/90 border border-amber-500/30 rounded-xl p-3.5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-amber-400 uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-trophy text-amber-400"></i> Knockout Stage Group
+                        </span>
+                        <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold border border-amber-500/20">Locked</span>
+                    </div>
+                    <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2.5 text-center text-xs text-amber-300 font-semibold">
+                        <i class="fa-solid fa-lock mr-1 text-amber-400"></i> নকআউট স্টেজ এখনো শুরু হয়নি। সময়মতো লিংক যুক্ত করা হবে।
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -510,16 +707,13 @@
            HYBRID STORAGE LOGIC (SUPABASE CLOUD + LOCALSTORAGE FALLBACK)
            ========================================================================== */
         async function loadState() {
-            // ১. আগে লোকালস্টোরেজ লোড
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
                 if (saved) appState = { ...appState, ...JSON.parse(saved) };
             } catch (e) {}
 
-            // ২. Supabase কানেক্টেড থাকলে ক্লাউড থেকে ডাটা ফেচ
             if (supabaseClient) {
                 try {
-                    // Fetch Players
                     const { data: pData } = await supabaseClient.from('players').select('*');
                     if (pData) {
                         appState.players = pData.map(p => ({
@@ -535,7 +729,6 @@
                         }));
                     }
 
-                    // Fetch Group Fixtures
                     const { data: fData } = await supabaseClient.from('group_fixtures').select('*').order('id', { ascending: true });
                     if (fData) {
                         appState.groupFixtures = fData.map(f => ({
@@ -550,7 +743,6 @@
                         }));
                     }
 
-                    // Fetch Tournament State (Groups & Knockouts)
                     const { data: sData } = await supabaseClient.from('tournament_state').select('*').eq('id', 1).single();
                     if (sData) {
                         if (sData.groups) appState.groups = sData.groups;
@@ -563,15 +755,12 @@
         }
 
         async function saveState() {
-            // ১. লোকালস্টোরেজে সেভ
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
             } catch (e) {}
 
-            // ২. Supabase-এ পুশ
             if (supabaseClient) {
                 try {
-                    // Save State
                     await supabaseClient.from('tournament_state').upsert({
                         id: 1,
                         groups: appState.groups,
@@ -1112,9 +1301,7 @@
                 const p1 = appState.players.find(p => p.id === m.p1Id);
                 const p2 = appState.players.find(p => p.id === m.p2Id);
 
-                // Check if players have qualified for this matchup
                 const isPlayersQualified = (p1 && p2);
-                // Locked if management not logged in OR if players haven't qualified yet
                 const isMatchInputDisabled = !appState.isManagementLoggedIn || !isPlayersQualified;
 
                 const card = document.createElement('div');
@@ -1348,6 +1535,38 @@
                 showToast(`Copied ${count} player emails!`, 'success');
             } catch (err) {
                 showToast('Failed to copy emails', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        /* MATCHDAY GROUP LINK COPY HELPER */
+        function copyGroupLink(link) {
+            if (!link || link.includes('placeholder')) {
+                showToast('লিংকটি এখনো কোডে যুক্ত করা হয়নি!', 'error');
+                return;
+            }
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(link).then(() => {
+                    showToast('মেসেঞ্জার গ্রুপ লিংক কপি করা হয়েছে!', 'success');
+                }).catch(() => fallbackCopyText(link));
+            } else {
+                fallbackCopyText(link);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('মেসেঞ্জার গ্রুপ লিংক কপি করা হয়েছে!', 'success');
+            } catch (err) {
+                showToast('লিংক কপি করতে ব্যর্থ হয়েছে', 'error');
             }
             document.body.removeChild(textArea);
         }
